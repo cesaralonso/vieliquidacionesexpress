@@ -5,7 +5,7 @@ const passport = require('passport');
 router
     .post('/register', (req, res, next) => {
         const user = {
-          idUser: null,
+          iduser: null,
           usuario: req.body.usuario,
           password: req.body.password,
           Rol_idRol: req.body.Rol_idRol,
@@ -29,7 +29,7 @@ router
     })
     // .post('/profile', (req, res, next) => { // http://passportjs.org/docs -> Custom Callback
     //     passport.authenticate('jwt', { session: false}, (err, user, info) => {
-    //         console.log(user.idUser);
+    //         console.log(user.iduser);
     //         //
     //     })(req, res, next);
     // })
@@ -62,7 +62,7 @@ router
     })
     .patch('/', (req, res, next) => {
         const user = {
-          idUser: req.body.idUser,
+          iduser: req.body.iduser,
           usuario: req.body.usuario,
           password: req.body.password,
           Rol_idRol: req.body.Rol_idRol,

@@ -16,7 +16,7 @@ Permiso.all = next => {
 Permiso.findById = (PermisoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM permiso WHERE idPermiso = ?',
+    connection.query('SELECT * FROM permiso WHERE idpermiso = ?',
     [PermisoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -28,7 +28,7 @@ Permiso.findById = (PermisoId, next) => {
 Permiso.count = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`SELECT COUNT(idPermiso) AS count FROM permiso`, (error, result) => {
+    connection.query(`SELECT COUNT(idpermiso) AS count FROM permiso`, (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -39,7 +39,7 @@ Permiso.count = next => {
 Permiso.exist = (PermisoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT EXISTS(SELECT 1 FROM permiso WHERE idPermiso = ?) AS exist', [PermisoId], (error, result) => {
+    connection.query('SELECT EXISTS(SELECT 1 FROM permiso WHERE idpermiso = ?) AS exist', [PermisoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -62,7 +62,7 @@ Permiso.insert = (Permiso, next) => {
 Permiso.update = (Permiso, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('UPDATE permiso SET ? WHERE idPermiso = ?', [Permiso, Permiso.idPermiso], (error, result) => {
+    connection.query('UPDATE permiso SET ? WHERE idpermiso = ?', [Permiso, Permiso.idpermiso], (error, result) => {
         if ( error )
             return next({ success: false, error: error });
         else

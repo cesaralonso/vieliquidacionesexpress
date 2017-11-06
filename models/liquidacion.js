@@ -1,11 +1,11 @@
 const connection = require('../config/db-connection');
 
-const Abono = {};
+const Liquidacion = {};
 
-Abono.all = next => {
+Liquidacion.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM abono', (error, result) => {
+    connection.query('SELECT * FROM liquidacion', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -13,11 +13,11 @@ Abono.all = next => {
     });
 };
 
-Abono.findById = (AbonoId, next) => {
+Liquidacion.findById = (LiquidacionId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM abono WHERE idAbono = ?',
-    [AbonoId], (error, result) => {
+    connection.query('SELECT * FROM liquidacion WHERE idliquidacion = ?',
+    [LiquidacionId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -25,10 +25,10 @@ Abono.findById = (AbonoId, next) => {
     });
 };
 
-Abono.count = next => {
+Liquidacion.count = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`SELECT COUNT(idAbono) AS count FROM abono`, (error, result) => {
+    connection.query(`SELECT COUNT(idliquidacion) AS count FROM liquidacion`, (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -36,10 +36,10 @@ Abono.count = next => {
     });
 };
 
-Abono.exist = (AbonoId, next) => {
+Liquidacion.exist = (LiquidacionId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT EXISTS(SELECT 1 FROM abono WHERE idAbono = ?) AS exist', [AbonoId], (error, result) => {
+    connection.query('SELECT EXISTS(SELECT 1 FROM liquidacion WHERE idliquidacion = ?) AS exist', [LiquidacionId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -48,10 +48,10 @@ Abono.exist = (AbonoId, next) => {
     })
 };
 
-Abono.insert = (Abono, next) => {
+Liquidacion.insert = (Liquidacion, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`INSERT INTO abono SET ?`, [Abono], (error, result) => {
+    connection.query(`INSERT INTO liquidacion SET ?`, [Liquidacion], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -59,10 +59,10 @@ Abono.insert = (Abono, next) => {
     });
 };
 
-Abono.update = (abono, next) => {
+Liquidacion.update = (Liquidacion, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('UPDATE abono SET ? WHERE idAbono = ?', [abono, abono.idAbono], (error, result) => {
+    connection.query('UPDATE liquidacion SET ? WHERE idliquidacion = ?', [Liquidacion, Liquidacion.idliquidacion], (error, result) => {
         if ( error )
             return next({ success: false, error: error });
         else
@@ -70,11 +70,11 @@ Abono.update = (abono, next) => {
     });
 };
 
-Abono.response = (res, error, data) => {
+Liquidacion.response = (res, error, data) => {
     if ( error )
         res.status(500).json(error);
     else
         res.status(200).json(data);
 };
 
-module.exports = Abono;
+module.exports = Liquidacion;

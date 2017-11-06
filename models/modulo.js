@@ -16,7 +16,7 @@ Modulo.all = next => {
 Modulo.findById = (ModuloId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM modulo WHERE idModulo = ?',
+    connection.query('SELECT * FROM modulo WHERE idmodulo = ?',
     [ModuloId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -28,7 +28,7 @@ Modulo.findById = (ModuloId, next) => {
 Modulo.count = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`SELECT COUNT(idModulo) AS count FROM modulo`, (error, result) => {
+    connection.query(`SELECT COUNT(idmodulo) AS count FROM modulo`, (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -39,7 +39,7 @@ Modulo.count = next => {
 Modulo.exist = (ModuloId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT EXISTS(SELECT 1 FROM modulo WHERE idModulo = ?) AS exist', [ModuloId], (error, result) => {
+    connection.query('SELECT EXISTS(SELECT 1 FROM modulo WHERE idmodulo = ?) AS exist', [ModuloId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -62,7 +62,7 @@ Modulo.insert = (Modulo, next) => {
 Modulo.update = (Modulo, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('UPDATE modulo SET ? WHERE idModulo = ?', [Modulo, Modulo.idModulo], (error, result) => {
+    connection.query('UPDATE modulo SET ? WHERE idmodulo = ?', [Modulo, Modulo.idmodulo], (error, result) => {
         if ( error )
             return next({ success: false, error: error });
         else

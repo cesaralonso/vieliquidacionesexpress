@@ -32,6 +32,7 @@ router
             rfc: req.body.rfc,
             telefono: req.body.telefono,
             domicilio: req.body.domicilio,
+            coordenada_idcoordenada: req.body.coordenada_idcoordenada,
         };
         Persona.update( persona, (error, data) => {
             return Persona.response(res, error, data);
@@ -46,6 +47,7 @@ router
             rfc: req.body.rfc,
             telefono: req.body.telefono,
             domicilio: req.body.domicilio,
+            coordenada_idcoordenada: req.body.coordenada_idcoordenada,
         };
         console.log(persona);
         Persona.insert( persona, (error, data) => {

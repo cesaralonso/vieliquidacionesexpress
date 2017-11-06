@@ -43,7 +43,7 @@ User.login = ( email, password, next ) => {
         return next('Connection refused');
 
     connection.query(`
-        SELECT idUser, Usuario, password FROM user WHERE Usuario = ?`, [Usuario], (error, result) => {
+        SELECT iduser, Usuario, password FROM user WHERE Usuario = ?`, [Usuario], (error, result) => {
         if ( error )
             return next( error );
         if ( result[0] ) {
@@ -51,7 +51,7 @@ User.login = ( email, password, next ) => {
             bcrypt.compare(password, hash, ( error, res ) => {
                 if ( res ) {
                     const User = {
-                        id_User: result[0].idUser,
+                        id_User: result[0].iduser,
                         Usuario: result[0].Usuario,
                         password: hash
                     }
@@ -93,7 +93,7 @@ User.all = next => {
 User.findById = (UserId, next) => {
     if ( !connection )
         return next('Connection refused');
-        connection.query('SELECT * FROM user WHERE idUser = ?',
+        connection.query('SELECT * FROM user WHERE iduser = ?',
         [UserId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -105,7 +105,7 @@ User.findById = (UserId, next) => {
 User.count = next => {
     if ( !connection )
         return next('Connection refused');
-        connection.query(`SELECT COUNT(idUser) AS count FROM user`, (error, result) => {
+        connection.query(`SELECT COUNT(iduser) AS count FROM user`, (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -116,7 +116,7 @@ User.count = next => {
 User.exist = (UserId, next) => {
     if ( !connection )
         return next('Connection refused');
-        connection.query('SELECT EXISTS(SELECT 1 FROM user WHERE idUser = ?) AS exist', [UserId], (error, result) => {
+        connection.query('SELECT EXISTS(SELECT 1 FROM user WHERE iduser = ?) AS exist', [UserId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -128,7 +128,7 @@ User.exist = (UserId, next) => {
 User.update = (User, next) => {
     if ( !connection )
         return next('Connection refused');
-        connection.query('UPDATE user SET ? WHERE idUser = ?', [User, User.idUser], (error, result) => {
+        connection.query('UPDATE user SET ? WHERE iduser = ?', [User, User.iduser], (error, result) => {
         if ( error )
             return next({ success: false, error: error });
         else
@@ -139,7 +139,7 @@ User.update = (User, next) => {
 User.remove = (UserId, next) => {
     if( !connection )
         return next('Connection refused');
-    connection.query('DELETE FROM user WHERE idUser = ?', [UserId], (error, result) => {
+    connection.query('DELETE FROM user WHERE iduser = ?', [UserId], (error, result) => {
         if(error) return next({ success: false, error: error, message: 'An error has happened while deleting table' });
         return next(null, { success: true, result: result, message: '¡Usuario eliminado!' });
     });

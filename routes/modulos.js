@@ -25,7 +25,7 @@ router
     })
     .patch('/', (req, res, next) => {
         const modulo = {
-            idModulo: req.body.idModulo,
+            idmodulo: req.body.idmodulo,
             nombre: req.body.nombre,
         };
         Modulo.update( modulo, (error, data) => {
@@ -34,7 +34,7 @@ router
     })
     .post('/', (req, res, next) => {
         const modulo = {
-            idModulo: null,
+            idmodulo: null,
             nombre: req.body.nombre,
         };
         console.log(modulo);

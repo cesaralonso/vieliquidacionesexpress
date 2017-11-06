@@ -16,7 +16,7 @@ Persona.all = next => {
 Persona.findById = (PersonaId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM persona WHERE idPersona = ?',
+    connection.query('SELECT * FROM persona WHERE idpersona = ?',
     [PersonaId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -28,7 +28,7 @@ Persona.findById = (PersonaId, next) => {
 Persona.count = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`SELECT COUNT(idPersona) AS count FROM persona`, (error, result) => {
+    connection.query(`SELECT COUNT(idpersona) AS count FROM persona`, (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -39,7 +39,7 @@ Persona.count = next => {
 Persona.exist = (PersonaId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT EXISTS(SELECT 1 FROM persona WHERE idPersona = ?) AS exist', [PersonaId], (error, result) => {
+    connection.query('SELECT EXISTS(SELECT 1 FROM persona WHERE idpersona = ?) AS exist', [PersonaId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -62,7 +62,7 @@ Persona.insert = (Persona, next) => {
 Persona.update = (Persona, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('UPDATE persona SET ? WHERE idPersona = ?', [Persona, Persona.idPersona], (error, result) => {
+    connection.query('UPDATE persona SET ? WHERE idpersona = ?', [Persona, Persona.idpersona], (error, result) => {
         if ( error )
             return next({ success: false, error: error });
         else

@@ -34,7 +34,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `vieliquidaciones`.`persona`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`persona` (
-  `idPersona` INT(11) NOT NULL AUTO_INCREMENT,
+  `idpersona` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL DEFAULT NULL,
   `edad` INT(11) NULL DEFAULT NULL,
   `sexo` VARCHAR(15) NULL DEFAULT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`persona` (
   `created_by` INT(11) NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`idPersona`),
+  PRIMARY KEY (`idpersona`),
   INDEX `fk_persona_coordenada1_idx` (`coordenada_idcoordenada` ASC),
   CONSTRAINT `fk_persona_coordenada1`
     FOREIGN KEY (`coordenada_idcoordenada`)
@@ -82,27 +82,27 @@ CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`chofer` (
   INDEX `fk_chofer_persona5_idx` (`aval4` ASC),
   CONSTRAINT `fk_chofer_persona1`
     FOREIGN KEY (`chofer`)
-    REFERENCES `vieliquidaciones`.`persona` (`idPersona`)
+    REFERENCES `vieliquidaciones`.`persona` (`idpersona`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_chofer_persona2`
     FOREIGN KEY (`aval1`)
-    REFERENCES `vieliquidaciones`.`persona` (`idPersona`)
+    REFERENCES `vieliquidaciones`.`persona` (`idpersona`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_chofer_persona3`
     FOREIGN KEY (`aval2`)
-    REFERENCES `vieliquidaciones`.`persona` (`idPersona`)
+    REFERENCES `vieliquidaciones`.`persona` (`idpersona`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_chofer_persona4`
     FOREIGN KEY (`aval3`)
-    REFERENCES `vieliquidaciones`.`persona` (`idPersona`)
+    REFERENCES `vieliquidaciones`.`persona` (`idpersona`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_chofer_persona5`
     FOREIGN KEY (`aval4`)
-    REFERENCES `vieliquidaciones`.`persona` (`idPersona`)
+    REFERENCES `vieliquidaciones`.`persona` (`idpersona`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`concepto` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-
+--AQUI VOY
 -- -----------------------------------------------------
 -- Table `vieliquidaciones`.`vehiculo`
 -- -----------------------------------------------------
@@ -233,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`vehiculo` (
   INDEX `fk_vehiculo_persona_idx` (`propietario` ASC),
   CONSTRAINT `fk_vehiculo_persona`
     FOREIGN KEY (`propietario`)
-    REFERENCES `vieliquidaciones`.`persona` (`idPersona`)
+    REFERENCES `vieliquidaciones`.`persona` (`idpersona`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -260,7 +260,7 @@ CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`permisotaxi` (
   INDEX `fk_permisotaxi_persona1_idx` (`propietario` ASC),
   CONSTRAINT `fk_permisotaxi_persona1`
     FOREIGN KEY (`propietario`)
-    REFERENCES `vieliquidaciones`.`persona` (`idPersona`)
+    REFERENCES `vieliquidaciones`.`persona` (`idpersona`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -522,7 +522,7 @@ CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`mecanico` (
   INDEX `fk_mecanico_taller2_idx` (`taller_idtaller` ASC),
   CONSTRAINT `fk_mecanico_persona1`
     FOREIGN KEY (`persona_idpersona`)
-    REFERENCES `vieliquidaciones`.`persona` (`idPersona`)
+    REFERENCES `vieliquidaciones`.`persona` (`idpersona`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_mecanico_taller2`
@@ -538,13 +538,13 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `vieliquidaciones`.`modulo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`modulo` (
-  `idModulo` INT(11) NOT NULL AUTO_INCREMENT,
+  `idmodulo` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL DEFAULT NULL,
   `baja` TINYINT(1) NULL DEFAULT NULL,
   `created_by` INT(11) NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`idModulo`))
+  PRIMARY KEY (`idmodulo`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -681,13 +681,13 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `vieliquidaciones`.`rol`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`rol` (
-  `idRol` INT(11) NOT NULL AUTO_INCREMENT,
+  `idrol` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL DEFAULT NULL,
   `baja` TINYINT(1) NULL DEFAULT NULL,
   `created_by` INT(11) NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`idRol`))
+  PRIMARY KEY (`idrol`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -696,25 +696,25 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `vieliquidaciones`.`permiso`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`permiso` (
-  `idPermiso` INT(11) NOT NULL AUTO_INCREMENT,
+  `idpermiso` INT(11) NOT NULL AUTO_INCREMENT,
   `acceso` TINYINT(4) NULL DEFAULT NULL,
-  `Rol_idRol` INT(11) NOT NULL,
-  `Modulo_idModulo` INT(11) NOT NULL,
+  `Rol_idrol` INT(11) NOT NULL,
+  `Modulo_idmodulo` INT(11) NOT NULL,
   `baja` TINYINT(1) NULL DEFAULT NULL,
   `created_by` INT(11) NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`idPermiso`),
-  INDEX `fk_Permiso_Rol1_idx` (`Rol_idRol` ASC),
-  INDEX `fk_Permiso_Modulo1_idx` (`Modulo_idModulo` ASC),
+  PRIMARY KEY (`idpermiso`),
+  INDEX `fk_Permiso_Rol1_idx` (`Rol_idrol` ASC),
+  INDEX `fk_Permiso_Modulo1_idx` (`Modulo_idmodulo` ASC),
   CONSTRAINT `fk_Permiso_Modulo1`
-    FOREIGN KEY (`Modulo_idModulo`)
-    REFERENCES `vieliquidaciones`.`modulo` (`idModulo`)
+    FOREIGN KEY (`Modulo_idmodulo`)
+    REFERENCES `vieliquidaciones`.`modulo` (`idmodulo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Permiso_Rol1`
-    FOREIGN KEY (`Rol_idRol`)
-    REFERENCES `vieliquidaciones`.`rol` (`idRol`)
+    FOREIGN KEY (`Rol_idrol`)
+    REFERENCES `vieliquidaciones`.`rol` (`idrol`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -750,19 +750,19 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `vieliquidaciones`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`user` (
-  `idUser` INT(11) NOT NULL AUTO_INCREMENT,
+  `iduser` INT(11) NOT NULL AUTO_INCREMENT,
   `usuario` VARCHAR(45) NULL DEFAULT NULL,
   `password` VARCHAR(45) NULL DEFAULT NULL,
-  `Rol_idRol` INT(11) NOT NULL,
+  `Rol_idrol` INT(11) NOT NULL,
   `baja` TINYINT(1) NULL DEFAULT NULL,
   `created_by` INT(11) NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`idUser`),
-  INDEX `fk_User_Rol_idx` (`Rol_idRol` ASC),
+  PRIMARY KEY (`iduser`),
+  INDEX `fk_User_Rol_idx` (`Rol_idrol` ASC),
   CONSTRAINT `fk_User_Rol`
-    FOREIGN KEY (`Rol_idRol`)
-    REFERENCES `vieliquidaciones`.`rol` (`idRol`)
+    FOREIGN KEY (`Rol_idrol`)
+    REFERENCES `vieliquidaciones`.`rol` (`idrol`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

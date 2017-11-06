@@ -25,7 +25,7 @@ router
     })
     .patch('/', (req, res, next) => {
         const permiso = {
-            idPermiso: req.body.idPermiso,
+            idpermiso: req.body.idpermiso,
             acceso: req.body.acceso,
             Rol_idRol: req.body.Rol_idRol,
             Modulo_idModulo: req.body.Modulo_idModulo,
@@ -37,7 +37,7 @@ router
     })
     .post('/', (req, res, next) => {
         const permiso = {
-            idPermiso: null,
+            idpermiso: null,
             acceso: req.body.acceso,
             Rol_idRol: req.body.Rol_idRol,
             Modulo_idModulo: req.body.Modulo_idModulo,

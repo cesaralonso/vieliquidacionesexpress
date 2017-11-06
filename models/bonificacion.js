@@ -1,11 +1,11 @@
 const connection = require('../config/db-connection');
 
-const Checkout = {};
+const Bonificacion = {};
 
-Checkout.all = next => {
+Bonificacion.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM checkout', (error, result) => {
+    connection.query('SELECT * FROM bonificacion', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -13,11 +13,11 @@ Checkout.all = next => {
     });
 };
 
-Checkout.findById = (CheckoutId, next) => {
+Bonificacion.findById = (BonificacionId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM checkout WHERE idCheckout = ?',
-    [CheckoutId], (error, result) => {
+    connection.query('SELECT * FROM bonificacion WHERE idbonificacion = ?',
+    [BonificacionId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -25,10 +25,10 @@ Checkout.findById = (CheckoutId, next) => {
     });
 };
 
-Checkout.count = next => {
+Bonificacion.count = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`SELECT COUNT(idCheckout) AS count FROM checkout`, (error, result) => {
+    connection.query(`SELECT COUNT(idbonificacion) AS count FROM bonificacion`, (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -36,10 +36,10 @@ Checkout.count = next => {
     });
 };
 
-Checkout.exist = (CheckoutId, next) => {
+Bonificacion.exist = (BonificacionId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT EXISTS(SELECT 1 FROM checkout WHERE idCheckout = ?) AS exist', [CheckoutId], (error, result) => {
+    connection.query('SELECT EXISTS(SELECT 1 FROM bonificacion WHERE idbonificacion = ?) AS exist', [BonificacionId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -48,10 +48,10 @@ Checkout.exist = (CheckoutId, next) => {
     })
 };
 
-Checkout.insert = (checkout, next) => {
+Bonificacion.insert = (Bonificacion, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`INSERT INTO checkout SET ?`, [checkout], (error, result) => {
+    connection.query(`INSERT INTO bonificacion SET ?`, [Bonificacion], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -59,11 +59,10 @@ Checkout.insert = (checkout, next) => {
     });
 };
 
-Checkout.update = (Checkout, next) => {
-  console.log(Checkout);
+Bonificacion.update = (Bonificacion, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('UPDATE checkout SET ? WHERE idCheckout = ?', [Checkout, Checkout.idCheckout], (error, result) => {
+    connection.query('UPDATE bonificacion SET ? WHERE idbonificacion = ?', [Bonificacion, Bonificacion.idbonificacion], (error, result) => {
         if ( error )
             return next({ success: false, error: error });
         else
@@ -71,11 +70,11 @@ Checkout.update = (Checkout, next) => {
     });
 };
 
-Checkout.response = (res, error, data) => {
+Bonificacion.response = (res, error, data) => {
     if ( error )
         res.status(500).json(error);
     else
         res.status(200).json(data);
 };
 
-module.exports = Checkout;
+module.exports = Bonificacion;

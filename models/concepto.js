@@ -1,11 +1,11 @@
 const connection = require('../config/db-connection');
 
-const Orden = {};
+const Concepto = {};
 
-Orden.all = next => {
+Concepto.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM orden', (error, result) => {
+    connection.query('SELECT * FROM concepto', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -13,11 +13,11 @@ Orden.all = next => {
     });
 };
 
-Orden.findById = (OrdenId, next) => {
+Concepto.findById = (ConceptoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM orden WHERE idOrden = ?',
-    [OrdenId], (error, result) => {
+    connection.query('SELECT * FROM concepto WHERE idconcepto = ?',
+    [ConceptoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -25,10 +25,10 @@ Orden.findById = (OrdenId, next) => {
     });
 };
 
-Orden.count = next => {
+Concepto.count = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`SELECT COUNT(idOrden) AS count FROM orden`, (error, result) => {
+    connection.query(`SELECT COUNT(idconcepto) AS count FROM concepto`, (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -36,10 +36,10 @@ Orden.count = next => {
     });
 };
 
-Orden.exist = (OrdenId, next) => {
+Concepto.exist = (ConceptoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT EXISTS(SELECT 1 FROM orden WHERE idOrden = ?) AS exist', [OrdenId], (error, result) => {
+    connection.query('SELECT EXISTS(SELECT 1 FROM concepto WHERE idconcepto = ?) AS exist', [ConceptoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -48,10 +48,10 @@ Orden.exist = (OrdenId, next) => {
     })
 };
 
-Orden.insert = (Orden, next) => {
+Concepto.insert = (Concepto, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`INSERT INTO orden SET ?`, [Orden], (error, result) => {
+    connection.query(`INSERT INTO concepto SET ?`, [Concepto], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -59,10 +59,10 @@ Orden.insert = (Orden, next) => {
     });
 };
 
-Orden.update = (Orden, next) => {
+Concepto.update = (Concepto, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('UPDATE orden SET ? WHERE idOrden = ?', [Orden, Orden.idOrden], (error, result) => {
+    connection.query('UPDATE concepto SET ? WHERE idconcepto = ?', [Concepto, Concepto.idconcepto], (error, result) => {
         if ( error )
             return next({ success: false, error: error });
         else
@@ -70,11 +70,11 @@ Orden.update = (Orden, next) => {
     });
 };
 
-Orden.response = (res, error, data) => {
+Concepto.response = (res, error, data) => {
     if ( error )
         res.status(500).json(error);
     else
         res.status(200).json(data);
 };
 
-module.exports = Orden;
+module.exports = Concepto;

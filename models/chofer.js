@@ -1,11 +1,11 @@
 const connection = require('../config/db-connection');
 
-const Cliente = {};
+const Chofer = {};
 
-Cliente.all = next => {
+Chofer.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM cliente', (error, result) => {
+    connection.query('SELECT * FROM chofer', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -13,11 +13,11 @@ Cliente.all = next => {
     });
 };
 
-Cliente.findById = (ClienteId, next) => {
+Chofer.findById = (ChoferId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM cliente WHERE idCliente = ?',
-    [ClienteId], (error, result) => {
+    connection.query('SELECT * FROM chofer WHERE idchofer = ?',
+    [ChoferId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -25,10 +25,10 @@ Cliente.findById = (ClienteId, next) => {
     });
 };
 
-Cliente.count = next => {
+Chofer.count = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`SELECT COUNT(idCliente) AS count FROM cliente`, (error, result) => {
+    connection.query(`SELECT COUNT(idchofer) AS count FROM chofer`, (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -36,10 +36,10 @@ Cliente.count = next => {
     });
 };
 
-Cliente.exist = (ClienteId, next) => {
+Chofer.exist = (ChoferId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT EXISTS(SELECT 1 FROM cliente WHERE idCliente = ?) AS exist', [ClienteId], (error, result) => {
+    connection.query('SELECT EXISTS(SELECT 1 FROM chofer WHERE idchofer = ?) AS exist', [ChoferId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -48,10 +48,10 @@ Cliente.exist = (ClienteId, next) => {
     })
 };
 
-Cliente.insert = (Cliente, next) => {
+Chofer.insert = (chofer, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`INSERT INTO cliente SET ?`, [Cliente], (error, result) => {
+    connection.query(`INSERT INTO chofer SET ?`, [chofer], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -59,10 +59,11 @@ Cliente.insert = (Cliente, next) => {
     });
 };
 
-Cliente.update = (Cliente, next) => {
+Chofer.update = (Chofer, next) => {
+  console.log(Chofer);
     if ( !connection )
         return next('Connection refused');
-    connection.query('UPDATE cliente SET ? WHERE idCliente = ?', [Cliente, Cliente.idCliente], (error, result) => {
+    connection.query('UPDATE chofer SET ? WHERE idchofer = ?', [Chofer, Chofer.idchofer], (error, result) => {
         if ( error )
             return next({ success: false, error: error });
         else
@@ -70,11 +71,11 @@ Cliente.update = (Cliente, next) => {
     });
 };
 
-Cliente.response = (res, error, data) => {
+Chofer.response = (res, error, data) => {
     if ( error )
         res.status(500).json(error);
     else
         res.status(200).json(data);
 };
 
-module.exports = Cliente;
+module.exports = Chofer;

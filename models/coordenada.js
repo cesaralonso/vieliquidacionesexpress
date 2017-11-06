@@ -1,11 +1,11 @@
 const connection = require('../config/db-connection');
 
-const Personal = {};
+const Coordenada = {};
 
-Personal.all = next => {
+Coordenada.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM personal', (error, result) => {
+    connection.query('SELECT * FROM coordenada', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -13,11 +13,11 @@ Personal.all = next => {
     });
 };
 
-Personal.findById = (PersonalId, next) => {
+Coordenada.findById = (CoordenadaId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM personal WHERE idPersonal = ?',
-    [PersonalId], (error, result) => {
+    connection.query('SELECT * FROM coordenada WHERE idcoordenada = ?',
+    [CoordenadaId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -25,10 +25,10 @@ Personal.findById = (PersonalId, next) => {
     });
 };
 
-Personal.count = next => {
+Coordenada.count = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`SELECT COUNT(idPersonal) AS count FROM personal`, (error, result) => {
+    connection.query(`SELECT COUNT(idcoordenada) AS count FROM coordenada`, (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -36,10 +36,10 @@ Personal.count = next => {
     });
 };
 
-Personal.exist = (PersonalId, next) => {
+Coordenada.exist = (CoordenadaId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT EXISTS(SELECT 1 FROM personal WHERE idPersonal = ?) AS exist', [PersonalId], (error, result) => {
+    connection.query('SELECT EXISTS(SELECT 1 FROM coordenada WHERE idcoordenada = ?) AS exist', [CoordenadaId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -48,10 +48,10 @@ Personal.exist = (PersonalId, next) => {
     })
 };
 
-Personal.insert = (Personal, next) => {
+Coordenada.insert = (Coordenada, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`INSERT INTO personal SET ?`, [Personal], (error, result) => {
+    connection.query(`INSERT INTO coordenada SET ?`, [Coordenada], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -59,10 +59,10 @@ Personal.insert = (Personal, next) => {
     });
 };
 
-Personal.update = (Personal, next) => {
+Coordenada.update = (coordenada, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('UPDATE personal SET ? WHERE idPersonal = ?', [Personal, Personal.idPersonal], (error, result) => {
+    connection.query('UPDATE coordenada SET ? WHERE idcoordenada = ?', [coordenada, coordenada.idcoordenada], (error, result) => {
         if ( error )
             return next({ success: false, error: error });
         else
@@ -70,11 +70,11 @@ Personal.update = (Personal, next) => {
     });
 };
 
-Personal.response = (res, error, data) => {
+Coordenada.response = (res, error, data) => {
     if ( error )
         res.status(500).json(error);
     else
         res.status(200).json(data);
 };
 
-module.exports = Personal;
+module.exports = Coordenada;

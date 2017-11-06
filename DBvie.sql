@@ -626,39 +626,6 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `vieliquidaciones`.`refaccion`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`refaccion` (
-  `idrefaccion` INT(11) NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45) NULL DEFAULT NULL,
-  `precioCompra` INT(11) NULL DEFAULT NULL,
-  `precioVenta` INT(11) NULL DEFAULT NULL,
-  `precioVentaIva` INT(11) NULL DEFAULT NULL,
-  `baja` TINYINT(1) NULL DEFAULT NULL,
-  `created_by` INT(11) NULL DEFAULT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  `modified_at` TIMESTAMP NULL DEFAULT NULL,
-  `taller_idtaller` INT(11) NOT NULL,
-  PRIMARY KEY (`idrefaccion`),
-  INDEX `fk_refaccion_taller1_idx` (`taller_idtaller` ASC),
-  CONSTRAINT `fk_refaccion_taller1`
-    FOREIGN KEY (`taller_idtaller`)
-    REFERENCES `vieliquidaciones`.`taller` (`idtaller`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `vieliquidaciones`.`ordenrefaccion`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`ordenrefaccion` (
-)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `vieliquidaciones`.`servicio`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`servicio` (
@@ -755,6 +722,31 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
+-- Table `vieliquidaciones`.`refaccion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`refaccion` (
+  `idrefaccion` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NULL DEFAULT NULL,
+  `precioCompra` INT(11) NULL DEFAULT NULL,
+  `precioVenta` INT(11) NULL DEFAULT NULL,
+  `precioVentaIva` INT(11) NULL DEFAULT NULL,
+  `taller_idtaller` INT(11) NOT NULL,
+  `baja` TINYINT(1) NULL DEFAULT NULL,
+  `created_by` INT(11) NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_at` TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (`idrefaccion`),
+  INDEX `fk_refaccion_taller1_idx` (`taller_idtaller` ASC),
+  CONSTRAINT `fk_refaccion_taller1`
+    FOREIGN KEY (`taller_idtaller`)
+    REFERENCES `vieliquidaciones`.`taller` (`idtaller`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
 -- Table `vieliquidaciones`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`user` (
@@ -781,7 +773,26 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `vieliquidaciones`.`ordenrefaccion`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`ordenrefaccion` (
-)
+  `idordenrefaccion` INT NOT NULL AUTO_INCREMENT,
+  `orden_idorden` INT(11) NOT NULL,
+  `refaccion_idrefaccion` INT(11) NOT NULL,
+  `baja` TINYINT(1) NULL DEFAULT NULL,
+  `created_by` INT(11) NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_at` TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (`idordenrefaccion`),
+  INDEX `fk_ordenrefaccion_orden1_idx` (`orden_idorden` ASC),
+  INDEX `fk_ordenrefaccion_refaccion1_idx` (`refaccion_idrefaccion` ASC),
+  CONSTRAINT `fk_ordenrefaccion_orden1`
+    FOREIGN KEY (`orden_idorden`)
+    REFERENCES `vieliquidaciones`.`orden` (`idorden`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ordenrefaccion_refaccion1`
+    FOREIGN KEY (`refaccion_idrefaccion`)
+    REFERENCES `vieliquidaciones`.`refaccion` (`idrefaccion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 

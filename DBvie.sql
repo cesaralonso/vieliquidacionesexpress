@@ -335,7 +335,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`taller` (
   `idtaller` INT(11) NOT NULL AUTO_INCREMENT,
-  `nomber` VARCHAR(45) NULL DEFAULT NULL,
+  `nombre` VARCHAR(45) NULL DEFAULT NULL,
   `direccion` VARCHAR(80) NULL DEFAULT NULL,
   `telefono` INT(11) NULL DEFAULT NULL,
   `descripcion` VARCHAR(80) NULL DEFAULT NULL,
@@ -440,7 +440,7 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `vieliquidaciones`.`folio`
+-- Table `vieliquidaciones`.`folio XXXXXXXXXXX
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`folio` (
   `idfolio` INT(11) NOT NULL AUTO_INCREMENT,

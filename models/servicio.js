@@ -1,11 +1,11 @@
 const connection = require('../config/db-connection');
 
-const Trabajo = {};
+const Servicio = {};
 
-Trabajo.all = next => {
+Servicio.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM trabajo', (error, result) => {
+    connection.query('SELECT * FROM servicio', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -13,11 +13,11 @@ Trabajo.all = next => {
     });
 };
 
-Trabajo.findById = (TrabajoId, next) => {
+Servicio.findById = (ServicioId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM trabajo WHERE idTrabajo = ?',
-    [TrabajoId], (error, result) => {
+    connection.query('SELECT * FROM servicio WHERE idservicio = ?',
+    [ServicioId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -25,10 +25,10 @@ Trabajo.findById = (TrabajoId, next) => {
     });
 };
 
-Trabajo.count = next => {
+Servicio.count = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`SELECT COUNT(idTrabajo) AS count FROM trabajo`, (error, result) => {
+    connection.query(`SELECT COUNT(idservicio) AS count FROM servicio`, (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -36,10 +36,10 @@ Trabajo.count = next => {
     });
 };
 
-Trabajo.exist = (TrabajoId, next) => {
+Servicio.exist = (ServicioId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT EXISTS(SELECT 1 FROM trabajo WHERE idTrabajo = ?) AS exist', [TrabajoId], (error, result) => {
+    connection.query('SELECT EXISTS(SELECT 1 FROM servicio WHERE idservicio = ?) AS exist', [ServicioId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -48,10 +48,10 @@ Trabajo.exist = (TrabajoId, next) => {
     })
 };
 
-Trabajo.insert = (Trabajo, next) => {
+Servicio.insert = (Servicio, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`INSERT INTO trabajo SET ?`, [Trabajo], (error, result) => {
+    connection.query(`INSERT INTO servicio SET ?`, [Servicio], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -59,10 +59,10 @@ Trabajo.insert = (Trabajo, next) => {
     });
 };
 
-Trabajo.update = (Trabajo, next) => {
+Servicio.update = (Servicio, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('UPDATE trabajo SET ? WHERE idTrabajo = ?', [Trabajo, Trabajo.idTrabajo], (error, result) => {
+    connection.query('UPDATE servicio SET ? WHERE idservicio = ?', [Servicio, Servicio.idservicio], (error, result) => {
         if ( error )
             return next({ success: false, error: error });
         else
@@ -70,11 +70,11 @@ Trabajo.update = (Trabajo, next) => {
     });
 };
 
-Trabajo.response = (res, error, data) => {
+Servicio.response = (res, error, data) => {
     if ( error )
         res.status(500).json(error);
     else
         res.status(200).json(data);
 };
 
-module.exports = Trabajo;
+module.exports = Servicio;

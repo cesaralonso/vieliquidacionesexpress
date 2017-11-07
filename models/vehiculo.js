@@ -1,11 +1,11 @@
 const connection = require('../config/db-connection');
 
-const Chofer = {};
+const Vehiculo = {};
 
-Chofer.all = next => {
+Vehiculo.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM chofer', (error, result) => {
+    connection.query('SELECT * FROM vehiculo', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -13,11 +13,11 @@ Chofer.all = next => {
     });
 };
 
-Chofer.findById = (ChoferId, next) => {
+Vehiculo.findById = (VehiculoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM chofer WHERE idchofer = ?',
-    [ChoferId], (error, result) => {
+    connection.query('SELECT * FROM vehiculo WHERE idvehiculo = ?',
+    [VehiculoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -25,10 +25,10 @@ Chofer.findById = (ChoferId, next) => {
     });
 };
 
-Chofer.count = next => {
+Vehiculo.count = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`SELECT COUNT(idchofer) AS count FROM chofer`, (error, result) => {
+    connection.query(`SELECT COUNT(idvehiculo) AS count FROM vehiculo`, (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -36,10 +36,10 @@ Chofer.count = next => {
     });
 };
 
-Chofer.exist = (ChoferId, next) => {
+Vehiculo.exist = (VehiculoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT EXISTS(SELECT 1 FROM chofer WHERE idchofer = ?) AS exist', [ChoferId], (error, result) => {
+    connection.query('SELECT EXISTS(SELECT 1 FROM vehiculo WHERE idvehiculo = ?) AS exist', [VehiculoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -48,10 +48,10 @@ Chofer.exist = (ChoferId, next) => {
     })
 };
 
-Chofer.insert = (Chofer, next) => {
+Vehiculo.insert = (Vehiculo, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`INSERT INTO chofer SET ?`, [Chofer], (error, result) => {
+    connection.query(`INSERT INTO vehiculo SET ?`, [Vehiculo], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -59,10 +59,10 @@ Chofer.insert = (Chofer, next) => {
     });
 };
 
-Chofer.update = (Chofer, next) => {
+Vehiculo.update = (Vehiculo, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('UPDATE chofer SET ? WHERE idchofer = ?', [Chofer, Chofer.idchofer], (error, result) => {
+    connection.query('UPDATE vehiculo SET ? WHERE idvehiculo = ?', [Vehiculo, Vehiculo.idvehiculo], (error, result) => {
         if ( error )
             return next({ success: false, error: error });
         else
@@ -70,11 +70,11 @@ Chofer.update = (Chofer, next) => {
     });
 };
 
-Chofer.response = (res, error, data) => {
+Vehiculo.response = (res, error, data) => {
     if ( error )
         res.status(500).json(error);
     else
         res.status(200).json(data);
 };
 
-module.exports = Chofer;
+module.exports = Vehiculo;

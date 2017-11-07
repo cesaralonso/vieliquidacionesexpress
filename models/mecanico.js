@@ -1,11 +1,11 @@
 const connection = require('../config/db-connection');
 
-const TipoTrabajo = {};
+const Mecanico = {};
 
-TipoTrabajo.all = next => {
+Mecanico.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM tipotrabajo', (error, result) => {
+    connection.query('SELECT * FROM mecanico', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -13,11 +13,11 @@ TipoTrabajo.all = next => {
     });
 };
 
-TipoTrabajo.findById = (TipoTrabajoId, next) => {
+Mecanico.findById = (MecanicoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM tipotrabajo WHERE idTipoTrabajo = ?',
-    [TipoTrabajoId], (error, result) => {
+    connection.query('SELECT * FROM mecanico WHERE idmecanico = ?',
+    [MecanicoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -25,10 +25,10 @@ TipoTrabajo.findById = (TipoTrabajoId, next) => {
     });
 };
 
-TipoTrabajo.count = next => {
+Mecanico.count = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`SELECT COUNT(idTipoTrabajo) AS count FROM tipotrabajo`, (error, result) => {
+    connection.query(`SELECT COUNT(idmecanico) AS count FROM mecanico`, (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -36,10 +36,10 @@ TipoTrabajo.count = next => {
     });
 };
 
-TipoTrabajo.exist = (TipoTrabajoId, next) => {
+Mecanico.exist = (MecanicoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT EXISTS(SELECT 1 FROM tipotrabajo WHERE idTipoTrabajo = ?) AS exist', [TipoTrabajoId], (error, result) => {
+    connection.query('SELECT EXISTS(SELECT 1 FROM mecanico WHERE idmecanico = ?) AS exist', [MecanicoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -48,10 +48,10 @@ TipoTrabajo.exist = (TipoTrabajoId, next) => {
     })
 };
 
-TipoTrabajo.insert = (TipoTrabajo, next) => {
+Mecanico.insert = (Mecanico, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`INSERT INTO tipotrabajo SET ?`, [TipoTrabajo], (error, result) => {
+    connection.query(`INSERT INTO mecanico SET ?`, [Mecanico], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -59,10 +59,10 @@ TipoTrabajo.insert = (TipoTrabajo, next) => {
     });
 };
 
-TipoTrabajo.update = (TipoTrabajo, next) => {
+Mecanico.update = (Mecanico, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('UPDATE tipotrabajo SET ? WHERE idTipoTrabajo = ?', [TipoTrabajo, TipoTrabajo.idTipoTrabajo], (error, result) => {
+    connection.query('UPDATE mecanico SET ? WHERE idmecanico = ?', [Mecanico, Mecanico.idmecanico], (error, result) => {
         if ( error )
             return next({ success: false, error: error });
         else
@@ -70,11 +70,11 @@ TipoTrabajo.update = (TipoTrabajo, next) => {
     });
 };
 
-TipoTrabajo.response = (res, error, data) => {
+Mecanico.response = (res, error, data) => {
     if ( error )
         res.status(500).json(error);
     else
         res.status(200).json(data);
 };
 
-module.exports = TipoTrabajo;
+module.exports = Mecanico;

@@ -1,11 +1,11 @@
 const connection = require('../config/db-connection');
 
-const Chofer = {};
+const Refaccion = {};
 
-Chofer.all = next => {
+Refaccion.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM chofer', (error, result) => {
+    connection.query('SELECT * FROM refaccion', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -13,11 +13,11 @@ Chofer.all = next => {
     });
 };
 
-Chofer.findById = (ChoferId, next) => {
+Refaccion.findById = (RefaccionId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM chofer WHERE idchofer = ?',
-    [ChoferId], (error, result) => {
+    connection.query('SELECT * FROM refaccion WHERE idrefaccion = ?',
+    [RefaccionId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -25,10 +25,10 @@ Chofer.findById = (ChoferId, next) => {
     });
 };
 
-Chofer.count = next => {
+Refaccion.count = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`SELECT COUNT(idchofer) AS count FROM chofer`, (error, result) => {
+    connection.query(`SELECT COUNT(idrefaccion) AS count FROM refaccion`, (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -36,10 +36,10 @@ Chofer.count = next => {
     });
 };
 
-Chofer.exist = (ChoferId, next) => {
+Refaccion.exist = (RefaccionId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT EXISTS(SELECT 1 FROM chofer WHERE idchofer = ?) AS exist', [ChoferId], (error, result) => {
+    connection.query('SELECT EXISTS(SELECT 1 FROM refaccion WHERE idrefaccion = ?) AS exist', [RefaccionId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -48,10 +48,10 @@ Chofer.exist = (ChoferId, next) => {
     })
 };
 
-Chofer.insert = (Chofer, next) => {
+Refaccion.insert = (Refaccion, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query(`INSERT INTO chofer SET ?`, [Chofer], (error, result) => {
+    connection.query(`INSERT INTO refaccion SET ?`, [Refaccion], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -59,10 +59,10 @@ Chofer.insert = (Chofer, next) => {
     });
 };
 
-Chofer.update = (Chofer, next) => {
+Refaccion.update = (Refaccion, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('UPDATE chofer SET ? WHERE idchofer = ?', [Chofer, Chofer.idchofer], (error, result) => {
+    connection.query('UPDATE refaccion SET ? WHERE idrefaccion = ?', [Refaccion, Refaccion.idrefaccion], (error, result) => {
         if ( error )
             return next({ success: false, error: error });
         else
@@ -70,11 +70,11 @@ Chofer.update = (Chofer, next) => {
     });
 };
 
-Chofer.response = (res, error, data) => {
+Refaccion.response = (res, error, data) => {
     if ( error )
         res.status(500).json(error);
     else
         res.status(200).json(data);
 };
 
-module.exports = Chofer;
+module.exports = Refaccion;

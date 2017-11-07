@@ -13,7 +13,7 @@ Fianza_has_folio.all = next => {
     });
 };
 
-Fianza_has_folio.findById = (fianza_idfianzaId,folio_idfolioId next) => {
+Fianza_has_folio.findById = (fianza_idfianzaId,folio_idfolioId, next) => {
     if ( !connection )
         return next('Connection refused');
     connection.query('SELECT * FROM fianza_has_folio WHERE fianza_idfianza = ? AND folio_idfolio = ?',

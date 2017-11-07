@@ -9,6 +9,7 @@ const passport = require('passport');
 //Route importation.
 const coordenada = require('./routes/coordenadas');
 const user = require('./routes/users');
+const rol = require('./routes/roles');
 const modulo = require('./routes/modulos');
 const permiso = require('./routes/permisos');
 const orden = require('./routes/ordenes');
@@ -35,7 +36,6 @@ const servicio = require('./routes/servicios');
 const ordenservicio = require('./routes/ordenservicios');
 const refaccion = require('./routes/refacciones');
 const ordenrefaccion = require('./routes/ordenrefacciones');
-const enviotaller = require('./routes/enviotalleres');
 
 // Express Instance
 const app = express();
@@ -56,6 +56,7 @@ require('./config/passport')(passport);
 // Warehouses
 app.use('/coordenada', coordenada);
 app.use('/user', user);
+app.use('/rol',rol);
 app.use('/modulo', modulo);
 app.use('/orden', orden);
 app.use('/permiso', permiso);
@@ -82,7 +83,7 @@ app.use('/servicio',servicio);
 app.use('/ordenservicio', ordenservicio);
 app.use('/refaccion', refaccion);
 app.use('/ordenrefaccion',ordenrefaccion);
-app.use('/enviotaller',enviotaller);
+
 
 
 // Set port

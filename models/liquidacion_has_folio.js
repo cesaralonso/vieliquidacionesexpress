@@ -13,7 +13,7 @@ Liquidacion_has_folio.all = next => {
     });
 };
 
-Liquidacion_has_folio.findById = (liquidacion_idliquidacionId,folio_idfolioId next) => {
+Liquidacion_has_folio.findById = (liquidacion_idliquidacionId,folio_idfolioId, next) => {
     if ( !connection )
         return next('Connection refused');
     connection.query('SELECT * FROM liquidacion_has_folio WHERE liquidacion_idliquidacion = ? AND folio_idfolio = ?',

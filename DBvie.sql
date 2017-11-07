@@ -114,10 +114,10 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`bonificacion` (
   `idbonificacion` INT(11) NOT NULL AUTO_INCREMENT,
-  `cantidad` FLOAT NOT NULL,
-  `validado` TINYINT(4) NOT NULL,
-  `status` VARCHAR(25) NOT NULL,
-  `concepto` VARCHAR(45) NOT NULL,
+  `cantidad` FLOAT NULL,
+  `validado` TINYINT(4) NULL,
+  `status` VARCHAR(25) NULL,
+  `concepto` VARCHAR(45) NULL,
   `chofer_idchofer` INT(11) NOT NULL,
   `baja` TINYINT(1) NULL DEFAULT NULL,
   `created_by` INT(11) NULL DEFAULT NULL,
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`concepto` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
---AQUI VOY
+
 -- -----------------------------------------------------
 -- Table `vieliquidaciones`.`vehiculo`
 -- -----------------------------------------------------

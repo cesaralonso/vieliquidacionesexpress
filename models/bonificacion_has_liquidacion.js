@@ -13,7 +13,7 @@ Bonificacion_has_liquidacion.all = next => {
     });
 };
 
-Bonificacion_has_liquidacion.findById = (bonificacion_idbonificacionId,liquidacion_idliquidacionId next) => {
+Bonificacion_has_liquidacion.findById = (bonificacion_idbonificacionId,liquidacion_idliquidacionId, next) => {
     if ( !connection )
         return next('Connection refused');
     connection.query('SELECT * FROM bonificacion_has_liquidacion WHERE bonificacion_idbonificacion = ? AND liquidacion_idliquidacion = ?',

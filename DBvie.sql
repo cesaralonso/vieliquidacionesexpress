@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`liquidacion` (
   `cambio` INT(11) NULL DEFAULT NULL,
   `folio` VARCHAR(45) NULL DEFAULT NULL,
   `kilometraje` INT(11) NULL DEFAULT NULL,
-  `fecha` INT(11) NULL DEFAULT NULL,
+  `fecha` DATE NULL DEFAULT NULL,
   `nota` VARCHAR(60) NULL DEFAULT NULL,
   `cantPagada` INT(11) NULL DEFAULT NULL,
   `cantDeuda` INT(11) NULL DEFAULT NULL,
@@ -698,22 +698,22 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`permiso` (
   `idpermiso` INT(11) NOT NULL AUTO_INCREMENT,
   `acceso` TINYINT(4) NULL DEFAULT NULL,
-  `Rol_idrol` INT(11) NOT NULL,
-  `Modulo_idmodulo` INT(11) NOT NULL,
+  `rol_idrol` INT(11) NOT NULL,
+  `modulo_idmodulo` INT(11) NOT NULL,
   `baja` TINYINT(1) NULL DEFAULT NULL,
   `created_by` INT(11) NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`idpermiso`),
-  INDEX `fk_Permiso_Rol1_idx` (`Rol_idrol` ASC),
-  INDEX `fk_Permiso_Modulo1_idx` (`Modulo_idmodulo` ASC),
+  INDEX `fk_Permiso_Rol1_idx` (`rol_idrol` ASC),
+  INDEX `fk_Permiso_Modulo1_idx` (`modulo_idmodulo` ASC),
   CONSTRAINT `fk_Permiso_Modulo1`
-    FOREIGN KEY (`Modulo_idmodulo`)
+    FOREIGN KEY (`modulo_idmodulo`)
     REFERENCES `vieliquidaciones`.`modulo` (`idmodulo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Permiso_Rol1`
-    FOREIGN KEY (`Rol_idrol`)
+    FOREIGN KEY (`rol_idrol`)
     REFERENCES `vieliquidaciones`.`rol` (`idrol`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -753,15 +753,15 @@ CREATE TABLE IF NOT EXISTS `vieliquidaciones`.`user` (
   `iduser` INT(11) NOT NULL AUTO_INCREMENT,
   `usuario` VARCHAR(45) NULL DEFAULT NULL,
   `password` VARCHAR(45) NULL DEFAULT NULL,
-  `Rol_idrol` INT(11) NOT NULL,
+  `rol_idrol` INT(11) NOT NULL,
   `baja` TINYINT(1) NULL DEFAULT NULL,
   `created_by` INT(11) NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`iduser`),
-  INDEX `fk_User_Rol_idx` (`Rol_idrol` ASC),
+  INDEX `fk_User_Rol_idx` (`rol_idrol` ASC),
   CONSTRAINT `fk_User_Rol`
-    FOREIGN KEY (`Rol_idrol`)
+    FOREIGN KEY (`rol_idrol`)
     REFERENCES `vieliquidaciones`.`rol` (`idrol`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

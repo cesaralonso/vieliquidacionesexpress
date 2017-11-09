@@ -42,8 +42,9 @@ User.login = ( email, password, next ) => {
     if ( !connection )
         return next('Connection refused');
 
-    connection.query(`
-        SELECT iduser, Usuario, password FROM user WHERE Usuario = ?`, [Usuario], (error, result) => {
+    const query = connection.query(`
+        SELECT iduser, email, password FROM user WHERE email = ?`, [email], (error, result) => {
+        console.log(query.sql)
         if ( error )
             return next( error );
         if ( result[0] ) {
@@ -51,8 +52,8 @@ User.login = ( email, password, next ) => {
             bcrypt.compare(password, hash, ( error, res ) => {
                 if ( res ) {
                     const User = {
-                        id_User: result[0].iduser,
-                        Usuario: result[0].Usuario,
+                        iduser: result[0].iduser,
+                        email: result[0].email,
                         password: hash
                     }
                     // Generate token
@@ -73,7 +74,7 @@ User.login = ( email, password, next ) => {
         } else {
             return next(null, {
                 success: false,
-                message: 'El usuario y password no coinciden'
+                message: 'El email y password no coinciden'
             })
         }
     });

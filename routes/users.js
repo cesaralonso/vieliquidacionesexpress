@@ -8,18 +8,17 @@ router
           iduser: null,
           usuario: req.body.usuario,
           password: req.body.password,
-          Rol_idRol: req.body.Rol_idRol,
+          rol_idrol: req.body.rol_idrol,
         }
         User.register( user, (error, data) =>{
             User.response(res, error, data);
         });
     })
     .post('/login', (req, res, next) => {
-        const usuario = req.body.usuario;
+        const email = req.body.email;
         const password = req.body.password;
-        console.log(usuario)
-        console.log(password)
-        User.login( usuario, password, ( error, data ) => {
+        
+        User.login( email, password, ( error, data ) => {
             return User.response( res, error, data );
         });
     })
@@ -65,7 +64,7 @@ router
           iduser: req.body.iduser,
           usuario: req.body.usuario,
           password: req.body.password,
-          Rol_idRol: req.body.Rol_idRol,
+          rol_idrol: req.body.rol_idrol,
         };
         User.update( user, (error, data) => {
             return User.response(res, error, data);

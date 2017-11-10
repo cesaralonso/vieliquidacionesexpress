@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Chofer = require('../models/chofer');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {
@@ -22,6 +23,14 @@ router
         Chofer.findById( choferId, (error, data) => {
             return Chofer.response(res, error, data);
         });
+    })
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const choferId = req.params.id;
+            Chofer.logicRemove( choferId, (error, data) => {
+                return Chofer.response(res, error, data);
+            });
+        })(req, res, next);        
     })
     .patch('/', (req, res, next) => {
         const chofer = {
@@ -50,7 +59,7 @@ router
             aval2: req.body.aval2,
             aval3: req.body.aval3,
             aval4: req.body.aval4,
-            
+            baja: false
         };
         console.log(chofer);
         Chofer.insert( chofer, (error, data) => {

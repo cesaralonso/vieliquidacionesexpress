@@ -5,7 +5,7 @@ const Persona = {};
 Persona.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM persona', (error, result) => {
+    connection.query('SELECT * FROM persona HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Persona.all = next => {
 Persona.findById = (PersonaId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM persona WHERE idpersona = ?',
+    connection.query('SELECT * FROM persona WHERE idpersona = ? HAVING baja IS NULL OR baja = false',
     [PersonaId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -53,20 +53,31 @@ Persona.insert = (Persona, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO persona SET ?`, [Persona], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Persona agregada correctamente' });
     });
 };
 
-Persona.update = (Persona, next) => {
+Persona.update = (persona, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('UPDATE persona SET ? WHERE idpersona = ?', [Persona, Persona.idpersona], (error, result) => {
+    connection.query('UPDATE persona SET ? WHERE idpersona = ?', [persona, persona.idpersona], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos de la persona actualizados'});
+    });
+};
+
+Persona.logicRemove = (personaId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE persona SET baja = 1 WHERE idpersona = ?', [personaId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Persona eliminada' });
     });
 };
 

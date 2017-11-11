@@ -5,7 +5,7 @@ const Concepto = {};
 Concepto.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM concepto', (error, result) => {
+    connection.query('SELECT * FROM concepto HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Concepto.all = next => {
 Concepto.findById = (ConceptoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM concepto WHERE idconcepto = ?',
+    connection.query('SELECT * FROM concepto WHERE idconcepto = ? HAVING baja IS NULL OR baja = false',
     [ConceptoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -53,10 +53,10 @@ Concepto.insert = (Concepto, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO concepto SET ?`, [Concepto], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
-    });
+            return next( null, { success: true, result: result, message: 'Concepto agregado correctamente' });
+});
 };
 
 Concepto.update = (Concepto, next) => {
@@ -64,9 +64,20 @@ Concepto.update = (Concepto, next) => {
         return next('Connection refused');
     connection.query('UPDATE concepto SET ? WHERE idconcepto = ?', [Concepto, Concepto.idconcepto], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos del concepto actualizados'});
+    });
+};
+
+Concepto.logicRemove = (conceptoId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE concepto SET baja = 1 WHERE idconcepto = ?', [conceptoId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Concepto eliminado' });
     });
 };
 

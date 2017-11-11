@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Permisotaxi = require('../models/permisotaxi');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {
@@ -49,12 +50,20 @@ router
             liquidez: req.body.liquidez,
             liquidezDom: req.body.liquidezDom,
             propietario: req.body.propietario,
-          
+            baja: false
           };
         console.log(permisotaxi);
         Permisotaxi.insert( permisotaxi, (error, data) => {
             return Permisotaxi.response(res, error, data);
         });
+    })
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const permisotaxiId = req.params.id;
+            Permisotaxi.logicRemove( permisotaxiId, (error, data) => {
+                return Permisotaxi.response(res, error, data);
+            });
+        })(req, res, next);        
     })
 
 module.exports = router;

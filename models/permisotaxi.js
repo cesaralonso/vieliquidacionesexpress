@@ -5,7 +5,7 @@ const Permisotaxi = {};
 Permisotaxi.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM permisotaxi', (error, result) => {
+    connection.query('SELECT * FROM permisotaxi HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Permisotaxi.all = next => {
 Permisotaxi.findById = (PermisotaxiId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM permisotaxi WHERE idpermisotaxi = ?',
+    connection.query('SELECT * FROM permisotaxi WHERE idpermisotaxi = ? HAVING baja IS NULL OR baja = false',
     [PermisotaxiId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -53,9 +53,9 @@ Permisotaxi.insert = (Permisotaxi, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO permisotaxi SET ?`, [Permisotaxi], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Permiso de taxi agregado correctamente' });
     });
 };
 
@@ -64,9 +64,20 @@ Permisotaxi.update = (Permisotaxi, next) => {
         return next('Connection refused');
     connection.query('UPDATE permisotaxi SET ? WHERE idpermisotaxi = ?', [Permisotaxi, Permisotaxi.idpermisotaxi], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos del permiso actualizados'});
+    });
+};
+
+Permisotaxi.logicRemove = (permisotaxiId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE permisotaxi SET baja = 1 WHERE idpermisotaxi = ?', [permisotaxiId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Permiso eliminado' });
     });
 };
 

@@ -7,17 +7,17 @@ const mySecretPass = process.env.SECRET_PASSWORD;
 
 const User = {};
 
-User.register = (User, next) => {
+User.register = (user, next) => {
     if ( !connection )
         return next('Connection refused');
     // Hash password
-    bcrypt.hash(User.password, saltRounds)
+    bcrypt.hash(user.password, saltRounds)
     .then( hash => {
-        User.password = hash;
+        user.password = hash;
         // Insert into table
-        connection.query('INSERT INTO user SET ?', [User], ( error, result ) => {
+        connection.query('INSERT INTO user SET ?', [user], ( error, result ) => {
             if ( error ) {
-                // WARNING: To take effect, User table must have the email field as unique column
+                // WARNING: To take effect, user table must have the email field as unique column
                 if (error.code === 'ER_DUP_ENTRY') {
                     return next( null, {
                         success: false,

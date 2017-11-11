@@ -5,7 +5,7 @@ const Vehiculo = {};
 Vehiculo.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM vehiculo', (error, result) => {
+    connection.query('SELECT * FROM vehiculo HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Vehiculo.all = next => {
 Vehiculo.findById = (VehiculoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM vehiculo WHERE idvehiculo = ?',
+    connection.query('SELECT * FROM vehiculo WHERE idvehiculo = ? HAVING baja IS NULL OR baja = false',
     [VehiculoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -53,9 +53,9 @@ Vehiculo.insert = (Vehiculo, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO vehiculo SET ?`, [Vehiculo], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Vehiculo agregado correctamente' });
     });
 };
 
@@ -64,9 +64,20 @@ Vehiculo.update = (Vehiculo, next) => {
         return next('Connection refused');
     connection.query('UPDATE vehiculo SET ? WHERE idvehiculo = ?', [Vehiculo, Vehiculo.idvehiculo], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos del vehiculo actualizados'});
+    });
+};
+
+Vehiculo.logicRemove = (vehiculoId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE vehiculo SET baja = 1 WHERE idvehiculo = ?', [vehiculoId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Vehiculo eliminado' });
     });
 };
 

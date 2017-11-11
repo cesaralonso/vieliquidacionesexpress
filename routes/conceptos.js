@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Concepto = require('../models/concepto');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {
@@ -27,7 +28,6 @@ router
         const concepto = {
             idconcepto: req.body.idconcepto,
             nombre: req.body.nombre,
-
         };
         Concepto.update( concepto, (error, data) => {
             return Concepto.response(res, error, data);
@@ -37,12 +37,20 @@ router
         const concepto = {
             idconcepto: null,
             nombre: req.body.nombre,
-          
+            baja: false
         };
         console.log(concepto);
         Concepto.insert( concepto, (error, data) => {
             return Concepto.response(res, error, data);
         });
+    })
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const conceptoId = req.params.id;
+            Concepto.logicRemove( conceptoId, (error, data) => {
+                return Concepto.response(res, error, data);
+            });
+        })(req, res, next);        
     })
 
 module.exports = router;

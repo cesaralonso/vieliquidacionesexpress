@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Vehiculo = require('../models/vehiculo');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {
@@ -80,6 +81,14 @@ router
         Vehiculo.insert( vehiculo, (error, data) => {
             return Vehiculo.response(res, error, data);
         });
+    })
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const vehiculoId = req.params.id;
+            Vehiculo.logicRemove( vehiculoId, (error, data) => {
+                return Vehiculo.response(res, error, data);
+            });
+        })(req, res, next);        
     })
 
 module.exports = router;

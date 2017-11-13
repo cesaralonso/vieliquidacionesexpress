@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Persona = require('../models/persona');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {
@@ -36,11 +37,11 @@ router
 
     .patch('/', (req, res, next) => {
         const persona = {
-            idPersona: req.body.idPersona,
+            idpersona: req.body.idpersona,
             nombre: req.body.nombre,
             edad: req.body.edad,
             sexo: req.body.sexo,
-            rfc: req.body.rfc,
+            RFC: req.body.RFC,
             telefono: req.body.telefono,
             domicilio: req.body.domicilio,
             coordenada_idcoordenada: req.body.coordenada_idcoordenada,
@@ -51,11 +52,11 @@ router
     })
     .post('/', (req, res, next) => {
         const persona = {
-            idPersona: null,
+            idpersona: null,
             nombre: req.body.nombre,
             edad: req.body.edad,
             sexo: req.body.sexo,
-            rfc: req.body.rfc,
+            RFC: req.body.RFC,
             telefono: req.body.telefono,
             domicilio: req.body.domicilio,
             coordenada_idcoordenada: req.body.coordenada_idcoordenada,
@@ -65,6 +66,14 @@ router
         Persona.insert( persona, (error, data) => {
             return Persona.response(res, error, data);
         });
+    })
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const personaId = req.params.id;
+            Persona.logicRemove( personaId, (error, data) => {
+                return Persona.response(res, error, data);
+            });
+        })(req, res, next);        
     })
 
 module.exports = router;

@@ -53,9 +53,9 @@ Permisotaxiasignado.insert = (Permisotaxiasignado, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO permisotaxiasignado SET ?`, [Permisotaxiasignado], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Permiso agregado correctamente' });
     });
 };
 
@@ -64,9 +64,20 @@ Permisotaxiasignado.update = (Permisotaxiasignado, next) => {
         return next('Connection refused');
     connection.query('UPDATE permisotaxiasignado SET ? WHERE idpermisotaxiasignado = ?', [Permisotaxiasignado, Permisotaxiasignado.idpermisotaxiasignado], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos del permiso actualizados'});
+    });
+};
+
+Permisotaxiasignado.logicRemove = (permisotaxiasignado, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE permisotaxiasignado SET baja = 1 WHERE idpermisotaxiasignado = ?', [permisotaxiasignado], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Permiso eliminado' });
     });
 };
 

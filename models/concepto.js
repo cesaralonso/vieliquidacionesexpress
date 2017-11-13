@@ -5,7 +5,7 @@ const Concepto = {};
 Concepto.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM concepto', (error, result) => {
+    connection.query('SELECT * FROM concepto HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Concepto.all = next => {
 Concepto.findById = (ConceptoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM concepto WHERE idconcepto = ?',
+    connection.query('SELECT * FROM concepto WHERE idconcepto = ? HAVING baja IS NULL OR baja = false',
     [ConceptoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,17 @@ Concepto.update = (Concepto, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+Concepto.logicRemove = (conceptoId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE concepto SET baja = 1 WHERE idconcepto = ?', [conceptoId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Concepto eliminado' });
     });
 };
 

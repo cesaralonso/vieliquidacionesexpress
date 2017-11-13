@@ -23,6 +23,18 @@ router
             return Fianza.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const fianzaId = req.params.id;
+            Fianza.logicRemove( fianzaId, (error, data) => {
+                return Fianza.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
+
     .patch('/', (req, res, next) => {
         const fianza = {
             idfianza: req.body.idfianza,
@@ -43,7 +55,8 @@ router
             montoadeudado: req.body.montoadeudado,
             status: req.body.status,
             chofer_idchofer: req.body.chofer_idchofer,
-            
+            baja: false
+
           };
         console.log(fianza);
         Fianza.insert( fianza, (error, data) => {

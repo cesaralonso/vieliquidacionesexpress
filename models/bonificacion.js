@@ -5,7 +5,7 @@ const Bonificacion = {};
 Bonificacion.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM bonificacion', (error, result) => {
+    connection.query('SELECT * FROM bonificacion HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Bonificacion.all = next => {
 Bonificacion.findById = (BonificacionId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM bonificacion WHERE idbonificacion = ?',
+    connection.query('SELECT * FROM bonificacion WHERE idbonificacion = ? HAVING baja IS NULL OR baja = false',
     [BonificacionId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -69,6 +69,19 @@ Bonificacion.update = (Bonificacion, next) => {
             return next( null, { success: true, result: result});
     });
 };
+
+Bonificacion.logicRemove = (bonificacionId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE bonificacion SET baja = 1 WHERE idbonificacion = ?', [bonificacionId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Bonificacion eliminada' });
+    });
+};
+
+
 
 Bonificacion.response = (res, error, data) => {
     if ( error )

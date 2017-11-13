@@ -5,7 +5,7 @@ const Persona = {};
 Persona.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM persona', (error, result) => {
+    connection.query('SELECT * FROM persona HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Persona.all = next => {
 Persona.findById = (PersonaId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM persona WHERE idpersona = ?',
+    connection.query('SELECT * FROM persona WHERE idpersona = ? HAVING baja IS NULL OR baja = false',
     [PersonaId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -69,6 +69,18 @@ Persona.update = (Persona, next) => {
             return next( null, { success: true, result: result});
     });
 };
+
+Persona.logicRemove = (personaId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE persona SET baja = 1 WHERE idpersona = ?', [personaId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Persona eliminado' });
+    });
+};
+
 
 Persona.response = (res, error, data) => {
     if ( error )

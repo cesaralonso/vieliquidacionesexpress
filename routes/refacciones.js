@@ -23,6 +23,16 @@ router
             return Refaccion.response(res, error, data);
         });
     })
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const refaccionId = req.params.id;
+            Refaccion.logicRemove( refaccionId, (error, data) => {
+                return Refaccion.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
     .patch('/', (req, res, next) => {
         const refaccion = {
             idrefaccion: req.body.idrefaccion,
@@ -45,7 +55,8 @@ router
             precioVenta: req.body.precioVenta,
             precioVentaIva: req.body.precioVentaIva,
             taller_idtaller: req.body.taller_idtaller,
-          
+            baja: false
+
           };
         console.log(refaccion);
         Refaccion.insert( refaccion, (error, data) => {

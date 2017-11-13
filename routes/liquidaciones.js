@@ -23,6 +23,17 @@ router
             return Liquidacion.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const liquidacionId = req.params.id;
+            Liquidacion.logicRemove( liquidacionId, (error, data) => {
+                return Liquidacion.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
     .patch('/', (req, res, next) => {
         const liquidacion = {
             idliquidacion: req.body.idliquidacion,
@@ -57,6 +68,7 @@ router
             status: req.body.status,
             bonificado: req.body.bonificado,
             chofer_idchofer: req.body.chofer_idchofer,
+            baja: false
         };
         console.log(liquidacion);
         Liquidacion.insert( liquidacion, (error, data) => {

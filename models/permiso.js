@@ -5,7 +5,7 @@ const Permiso = {};
 Permiso.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM permiso', (error, result) => {
+    connection.query('SELECT * FROM permiso HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Permiso.all = next => {
 Permiso.findById = (PermisoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM permiso WHERE idpermiso = ?',
+    connection.query('SELECT * FROM permiso WHERE idpermiso = ? HAVING baja IS NULL OR baja = false',
     [PermisoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,17 @@ Permiso.update = (Permiso, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+Permiso.logicRemove = (permisoId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE permiso SET baja = 1 WHERE idpermiso = ?', [permisoId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Permiso eliminado' });
     });
 };
 

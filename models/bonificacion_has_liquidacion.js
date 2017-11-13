@@ -5,7 +5,7 @@ const Bonificacion_has_liquidacion = {};
 Bonificacion_has_liquidacion.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM bonificacion_has_liquidacion', (error, result) => {
+    connection.query('SELECT * FROM bonificacion_has_liquidacion HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Bonificacion_has_liquidacion.all = next => {
 Bonificacion_has_liquidacion.findById = (bonificacion_idbonificacionId,liquidacion_idliquidacionId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM bonificacion_has_liquidacion WHERE bonificacion_idbonificacion = ? AND liquidacion_idliquidacion = ?',
+    connection.query('SELECT * FROM bonificacion_has_liquidacion WHERE bonificacion_idbonificacion = ? AND liquidacion_idliquidacion = ? HAVING baja IS NULL OR baja = false',
     [bonificacion_idbonificacionId,liquidacion_idliquidacionId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,17 @@ Bonificacion_has_liquidacion.update = (Bonificacion_has_liquidacion, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+Bonificacion_has_liquidacion.logicRemove = (bonificacion_idbonificacionId, liquidacion_idliquidacion, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE Bonificacion_has_liquidacion SET baja = 1 WHERE bonificacion_idbonificacion = ? liquidacion_idliquidacion = ?', [bonificacion_idbonificacionId, liquidacion_idliquidacion], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Bonificacion_has_liquidacion eliminado' });
     });
 };
 

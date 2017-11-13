@@ -23,6 +23,18 @@ router
             return Corralon.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const corralonId = req.params.id;
+            Corralon.logicRemove( corralonId, (error, data) => {
+                return Corralon.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
+
     .patch('/', (req, res, next) => {
         const corralon = {
             idcorralon: req.body.idcorralon,
@@ -47,7 +59,8 @@ router
             motivo: req.body.motivo,
             status: req.body.status,
             permisotaxiasignado_idpermisotaxiasignado: req.body.permisotaxiasignado_idpermisotaxiasignado,
-          
+            baja: false
+
           };
         console.log(corralon);
         Corralon.insert( corralon, (error, data) => {

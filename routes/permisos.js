@@ -23,12 +23,23 @@ router
             return Permiso.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const permisoId = req.params.id;
+            Permiso.logicRemove( permisoId, (error, data) => {
+                return Permiso.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
     .patch('/', (req, res, next) => {
         const permiso = {
             idpermiso: req.body.idpermiso,
             acceso: req.body.acceso,
-            Rol_idRol: req.body.Rol_idRol,
-            Modulo_idModulo: req.body.Modulo_idModulo,
+            rol_idrol: req.body.rol_idrol,
+            modulo_idmodulo: req.body.modulo_idmodulo,
 
         };
         Permiso.update( permiso, (error, data) => {
@@ -39,8 +50,9 @@ router
         const permiso = {
             idpermiso: null,
             acceso: req.body.acceso,
-            Rol_idRol: req.body.Rol_idRol,
-            Modulo_idModulo: req.body.Modulo_idModulo,
+            rol_idrol: req.body.rol_idrol,
+            modulo_idmodulo: req.body.modulo_idmodulo,
+            baja: false
 
         };
         console.log(permiso);

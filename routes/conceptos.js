@@ -23,6 +23,19 @@ router
             return Concepto.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const conceptoId = req.params.id;
+            Concepto.logicRemove( conceptoId, (error, data) => {
+                return Concepto.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
+
+
     .patch('/', (req, res, next) => {
         const concepto = {
             idconcepto: req.body.idconcepto,
@@ -37,7 +50,8 @@ router
         const concepto = {
             idconcepto: null,
             nombre: req.body.nombre,
-          
+            baja: false
+
         };
         console.log(concepto);
         Concepto.insert( concepto, (error, data) => {

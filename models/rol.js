@@ -5,7 +5,7 @@ const Rol = {};
 Rol.all = next => {
     if ( !connection )
         return next('Connection refused');
-        connection.query('SELECT * FROM rol', (error, result) => {
+        connection.query('SELECT * FROM rol HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Rol.all = next => {
 Rol.findById = (rolId, next) => {
     if ( !connection )
         return next('Connection refused');
-        connection.query('SELECT * FROM rol WHERE idrol = ?',
+        connection.query('SELECT * FROM rol WHERE idrol = ? HAVING baja IS NULL OR baja = false',
         [rolId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -78,6 +78,18 @@ Rol.remove = (rolId, cb) => {
         });
     }
 };
+
+Rol.logicRemove = (rolId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE rol SET baja = 1 WHERE idrol = ?', [rolId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Rol eliminado' });
+    });
+};
+
 
 Rol.response = (res, error, data) => {
     if ( error )

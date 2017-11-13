@@ -5,7 +5,7 @@ const Folio = {};
 Folio.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM folio', (error, result) => {
+    connection.query('SELECT * FROM folio HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Folio.all = next => {
 Folio.findById = (FolioId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM folio WHERE idfolio = ?',
+    connection.query('SELECT * FROM folio WHERE idfolio = ? HAVING baja IS NULL OR baja = false',
     [FolioId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,17 @@ Folio.update = (Folio, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+Folio.logicRemove = (folioId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE folio SET baja = 1 WHERE idfolio = ?', [folioId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Folio eliminado' });
     });
 };
 

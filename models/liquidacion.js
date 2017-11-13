@@ -5,7 +5,7 @@ const Liquidacion = {};
 Liquidacion.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM liquidacion', (error, result) => {
+    connection.query('SELECT * FROM liquidacion HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Liquidacion.all = next => {
 Liquidacion.findById = (LiquidacionId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM liquidacion WHERE idliquidacion = ?',
+    connection.query('SELECT * FROM liquidacion WHERE idliquidacion = ? HAVING baja IS NULL OR baja = false',
     [LiquidacionId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,17 @@ Liquidacion.update = (Liquidacion, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+Liquidacion.logicRemove = (liquidacionId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE liquidacion SET baja = 1 WHERE idliquidacion = ?', [liquidacionId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Liquidacion eliminado' });
     });
 };
 

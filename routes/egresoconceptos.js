@@ -23,6 +23,17 @@ router
             return Egresoconcepto.response(res, error, data);
         });
     })
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const egresoconceptoId = req.params.id;
+            Egresoconcepto.logicRemove( egresoconceptoId, (error, data) => {
+                return Egresoconcepto.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
+
     .patch('/', (req, res, next) => {
         const egresoconcepto = {
             idegresoconcepto: req.body.idegresoconcepto,
@@ -44,7 +55,7 @@ router
             taller_idtaller: req.body.taller_idtaller,
             concepto_idconcepto: req.body.concepto_idconcepto,
             concepto_idconceptoMotor: req.body.concepto_idconceptoMotor,
-          
+            baja: false
           };
         console.log(egresoconcepto);
         Egresoconcepto.insert( egresoconcepto, (error, data) => {

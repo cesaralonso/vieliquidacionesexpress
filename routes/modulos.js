@@ -23,6 +23,17 @@ router
             return Modulo.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const moduloId = req.params.id;
+            Modulo.logicRemove( moduloId, (error, data) => {
+                return Modulo.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
     .patch('/', (req, res, next) => {
         const modulo = {
             idmodulo: req.body.idmodulo,
@@ -36,6 +47,7 @@ router
         const modulo = {
             idmodulo: null,
             nombre: req.body.nombre,
+            baja: false
         };
         console.log(modulo);
         Modulo.insert( modulo, (error, data) => {

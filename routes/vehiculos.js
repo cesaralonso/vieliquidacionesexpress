@@ -23,6 +23,18 @@ router
             return Vehiculo.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const vehiculoId = req.params.id;
+            Vehiculo.logicRemove( vehiculoId, (error, data) => {
+                return Vehiculo.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
+
     .patch('/', (req, res, next) => {
         const vehiculo = {
             idvehiculo: req.body.idvehiculo,
@@ -62,6 +74,7 @@ router
             condInicial: req.body.condInicial,
             color: req.body.color,
             propietario: req.body.propietario,
+            baja: false
           };
         console.log(vehiculo);
         Vehiculo.insert( vehiculo, (error, data) => {

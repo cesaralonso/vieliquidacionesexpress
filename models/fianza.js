@@ -5,7 +5,7 @@ const Fianza = {};
 Fianza.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM fianza', (error, result) => {
+    connection.query('SELECT * FROM fianza HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Fianza.all = next => {
 Fianza.findById = (FianzaId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM fianza WHERE idfianza = ?',
+    connection.query('SELECT * FROM fianza WHERE idfianza = ? HAVING baja IS NULL OR baja = false',
     [FianzaId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,17 @@ Fianza.update = (Fianza, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+Fianza.logicRemove = (fianzaId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE fianza SET baja = 1 WHERE idfianza = ?', [fianzaId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Fianza eliminado' });
     });
 };
 

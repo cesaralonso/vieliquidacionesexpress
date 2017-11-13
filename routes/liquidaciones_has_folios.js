@@ -23,6 +23,18 @@ router
             return Liquidacion_has_folio.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const liquidacion_idliquidacionId = req.params.id;
+            Liquidacion_has_folio.logicRemove( liquidacion_idliquidacionId, folio_idfolioId, (error, data) => {
+                return Liquidacion_has_folio.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
+
     .patch('/', (req, res, next) => {
         const liquidacion_has_folio = {
             liquidacion_idliquidacion: req.body.liquidacion_idliquidacion,
@@ -37,6 +49,7 @@ router
         const liquidacion_has_folio = {
             liquidacion_idliquidacion: req.body.liquidacion_idliquidacion,
             folio_idfolio: req.body.folio_idfolio,
+            baja: false
 
         };
         console.log(liquidacion_has_folio);

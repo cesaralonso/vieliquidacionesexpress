@@ -23,12 +23,23 @@ router
             return Coordenada.response(res, error, data);
         });
     })
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const coordenadaId = req.params.id;
+            Coordenada.logicRemove( coordenadaId, (error, data) => {
+                return Coordenada.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
+
     .patch('/', (req, res, next) => {
         const coordenada = {
             idcoordenada: req.body.idcoordenada,
             latitud: req.body.latitud,
             longitud: req.body.longitud,
-            
+
         };
         Coordenada.update( coordenada, (error, data) => {
             return Coordenada.response(res, error, data);
@@ -39,7 +50,7 @@ router
             idcoordenada: null,
             latitud: req.body.latitud,
             longitud: req.body.longitud,
-
+            baja: false
           };
         console.log(coordenada);
         Coordenada.insert( coordenada, (error, data) => {

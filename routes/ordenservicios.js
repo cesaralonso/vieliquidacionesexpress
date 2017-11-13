@@ -23,6 +23,17 @@ router
             return Ordenservicio.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const ordenservicioId = req.params.id;
+            Ordenservicio.logicRemove( ordenservicioId, (error, data) => {
+                return Ordenservicio.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
     .patch('/', (req, res, next) => {
         const ordenservicio = {
             idordenservicio: req.body.idordenservicio,
@@ -39,7 +50,8 @@ router
             idordenservicio: null,
             orden_idorden: req.body.orden_idorden,
             servicio_idservicio: req.body.servicio_idservicio,
-          
+            baja: false
+
           };
         console.log(ordenservicio);
         Ordenservicio.insert( ordenservicio, (error, data) => {

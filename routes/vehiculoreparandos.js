@@ -23,6 +23,17 @@ router
             return Vehiculoreparando.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const vehiculoreparandoId = req.params.id;
+            Vehiculoreparando.logicRemove( vehiculoreparandoId, (error, data) => {
+                return Vehiculoreparando.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
     .patch('/', (req, res, next) => {
         const vehiculoreparando = {
             idvehiculoreparando: req.body.idvehiculoreparando,
@@ -57,6 +68,7 @@ router
             taller_idtaller: req.body.taller_idtaller,
             mecanico_idmecanico: req.body.mecanico_idmecanico,
             permisotaxiasignado_idpermisotaxiasignado: req.body.permisotaxiasignado_idpermisotaxiasignado,
+            baja: false
 
           };
         console.log(vehiculoreparando);

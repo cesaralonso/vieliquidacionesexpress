@@ -5,7 +5,7 @@ const Modulo = {};
 Modulo.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM modulo', (error, result) => {
+    connection.query('SELECT * FROM modulo HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Modulo.all = next => {
 Modulo.findById = (ModuloId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM modulo WHERE idmodulo = ?',
+    connection.query('SELECT * FROM modulo WHERE idmodulo = ? HAVING baja IS NULL OR baja = false',
     [ModuloId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -69,6 +69,18 @@ Modulo.update = (Modulo, next) => {
             return next( null, { success: true, result: result});
     });
 };
+
+Modulo.logicRemove = (moduloId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE modulo SET baja = 1 WHERE idmodulo = ?', [moduloId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Modulo eliminado' });
+    });
+};
+
 
 Modulo.response = (res, error, data) => {
     if ( error )

@@ -23,6 +23,17 @@ router
             return Servicio.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const servicioId = req.params.id;
+            Servicio.logicRemove( servicioId, (error, data) => {
+                return Servicio.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
     .patch('/', (req, res, next) => {
         const servicio = {
             idservicio: req.body.idservicio,
@@ -41,6 +52,7 @@ router
             nombre: req.body.nombre,
             precio: req.body.precio,
             iva: req.body.iva,
+            baja: false
 
           };
         console.log(servicio);

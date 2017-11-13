@@ -5,7 +5,7 @@ const Refaccion = {};
 Refaccion.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM refaccion', (error, result) => {
+    connection.query('SELECT * FROM refaccion HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Refaccion.all = next => {
 Refaccion.findById = (RefaccionId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM refaccion WHERE idrefaccion = ?',
+    connection.query('SELECT * FROM refaccion WHERE idrefaccion = ? HAVING baja IS NULL OR baja = false',
     [RefaccionId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,17 @@ Refaccion.update = (Refaccion, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+Refaccion.logicRemove = (refaccionId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE refaccion SET baja = 1 WHERE idrefaccion = ?', [refaccionId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Refaccion eliminado' });
     });
 };
 

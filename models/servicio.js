@@ -5,7 +5,7 @@ const Servicio = {};
 Servicio.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM servicio', (error, result) => {
+    connection.query('SELECT * FROM servicio HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Servicio.all = next => {
 Servicio.findById = (ServicioId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM servicio WHERE idservicio = ?',
+    connection.query('SELECT * FROM servicio WHERE idservicio = ? HAVING baja IS NULL OR baja = false',
     [ServicioId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -69,6 +69,18 @@ Servicio.update = (Servicio, next) => {
             return next( null, { success: true, result: result});
     });
 };
+
+Servicio.logicRemove = (servicioId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE servicio SET baja = 1 WHERE idservicio = ?', [servicioId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Servicio eliminado' });
+    });
+};
+
 
 Servicio.response = (res, error, data) => {
     if ( error )

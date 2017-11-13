@@ -23,6 +23,18 @@ router
             return Folio.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const folioId = req.params.id;
+            Folio.logicRemove( folioId, (error, data) => {
+                return Folio.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
+
     .patch('/', (req, res, next) => {
         const folio = {
             idfolio: req.body.idfolio,
@@ -37,7 +49,8 @@ router
         const folio = {
             idfolio: null,
             fecha: req.body.fecha,
-          
+            baja: false
+
           };
         console.log(folio);
         Folio.insert( folio, (error, data) => {

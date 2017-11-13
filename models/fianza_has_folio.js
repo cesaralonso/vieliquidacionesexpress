@@ -5,7 +5,7 @@ const Fianza_has_folio = {};
 Fianza_has_folio.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM fianza_has_folio', (error, result) => {
+    connection.query('SELECT * FROM fianza_has_folio HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -13,10 +13,10 @@ Fianza_has_folio.all = next => {
     });
 };
 
-Fianza_has_folio.findById = (fianza_idfianzaId,folio_idfolioId, next) => {
+Fianza_has_folio.findById = (fianza_idfianzaId, folio_idfolioId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM fianza_has_folio WHERE fianza_idfianza = ? AND folio_idfolio = ?',
+    connection.query('SELECT * FROM fianza_has_folio WHERE fianza_idfianza = ? AND folio_idfolio = ? HAVING baja IS NULL OR baja = false',
     [fianza_idfianzaId,folio_idfolioId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,17 @@ Fianza_has_folio.update = (Fianza_has_folio, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+Fianza_has_folio.logicRemove = (fianza_idfianzaId, folio_idfolioId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE fianza_has_folio SET baja = 1 WHERE idfianza_idfianza = ? idfolio_idfolio = ?', [fianza_idfianzaId, folio_idfolioId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Fianza_has_folio eliminado' });
     });
 };
 

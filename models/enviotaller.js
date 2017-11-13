@@ -5,7 +5,7 @@ const Enviotaller = {};
 Enviotaller.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM enviotaller', (error, result) => {
+    connection.query('SELECT * FROM enviotaller HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Enviotaller.all = next => {
 Enviotaller.findById = (EnviotallerId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM enviotaller WHERE idenviotaller = ?',
+    connection.query('SELECT * FROM enviotaller WHERE idenviotaller = ? HAVING baja IS NULL OR baja = false',
     [EnviotallerId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,17 @@ Enviotaller.update = (Enviotaller, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+Enviotaller.logicRemove = (enviotallerId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE enviotaller SET baja = 1 WHERE idenviotaller = ?', [enviotallerId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Enviotaller eliminado' });
     });
 };
 

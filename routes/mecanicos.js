@@ -23,6 +23,17 @@ router
             return Mecanico.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const mecanicoId = req.params.id;
+            Mecanico.logicRemove( mecanicoId, (error, data) => {
+                return Mecanico.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
     .patch('/', (req, res, next) => {
         const mecanico = {
             idmecanico: req.body.idmecanico,
@@ -39,7 +50,8 @@ router
             idmecanico: null,
             persona_idpersona: req.body.persona_idpersona,
             taller_idtaller: req.body.taller_idtaller,
-          
+            baja: false
+
           };
         console.log(mecanico);
         Mecanico.insert( mecanico, (error, data) => {

@@ -5,7 +5,7 @@ const Ordenservicio = {};
 Ordenservicio.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM ordenservicio', (error, result) => {
+    connection.query('SELECT * FROM ordenservicio HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Ordenservicio.all = next => {
 Ordenservicio.findById = (OrdenservicioId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM ordenservicio WHERE idordenservicio = ?',
+    connection.query('SELECT * FROM ordenservicio WHERE idordenservicio = ? HAVING baja IS NULL OR baja = false',
     [OrdenservicioId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,17 @@ Ordenservicio.update = (Ordenservicio, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+Ordenservicio.logicRemove = (ordenservicioId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE ordenservicio SET baja = 1 WHERE idordenservicio = ?', [ordenservicioId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Ordenservicio eliminado' });
     });
 };
 

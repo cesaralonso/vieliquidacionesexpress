@@ -23,6 +23,17 @@ router
             return Ordenrefaccion.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const ordenrefaccionId = req.params.id;
+            Ordenrefaccion.logicRemove( ordenrefaccionId, (error, data) => {
+                return Ordenrefaccion.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
     .patch('/', (req, res, next) => {
         const ordenrefaccion = {
             idordenrefaccion: req.body.idordenrefaccion,
@@ -39,7 +50,8 @@ router
             idordenrefaccion: null,
             orden_idorden: req.body.orden_idorden,
             refaccion_idrefaccion: req.body.refaccion_idrefaccion,
-          
+            baja: false
+
           };
         console.log(ordenrefaccion);
         Ordenrefaccion.insert( ordenrefaccion, (error, data) => {

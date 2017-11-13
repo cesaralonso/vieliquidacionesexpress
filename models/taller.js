@@ -5,7 +5,7 @@ const Taller = {};
 Taller.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM taller', (error, result) => {
+    connection.query('SELECT * FROM taller HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Taller.all = next => {
 Taller.findById = (TallerId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM taller WHERE idtaller = ?',
+    connection.query('SELECT * FROM taller WHERE idtaller = ? HAVING baja IS NULL OR baja = false',
     [TallerId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,17 @@ Taller.update = (Taller, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+Taller.logicRemove = (tallerId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE taller SET baja = 1 WHERE idtaller = ?', [tallerId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Taller eliminado' });
     });
 };
 

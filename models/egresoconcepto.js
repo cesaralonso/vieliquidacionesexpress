@@ -5,7 +5,7 @@ const Egresoconcepto = {};
 Egresoconcepto.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM egresoconcepto', (error, result) => {
+    connection.query('SELECT * FROM egresoconcepto HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Egresoconcepto.all = next => {
 Egresoconcepto.findById = (EgresoconceptoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM egresoconcepto WHERE idegresoconcepto = ?',
+    connection.query('SELECT * FROM egresoconcepto WHERE idegresoconcepto = ? HAVING baja IS NULL OR baja = false',
     [EgresoconceptoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,17 @@ Egresoconcepto.update = (Egresoconcepto, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+Egresoconcepto.logicRemove = (egresoconceptoId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE egresoconcepto SET baja = 1 WHERE idegresoconcepto = ?', [egresoconceptoId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Egresoconcepto eliminado' });
     });
 };
 

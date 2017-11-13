@@ -83,7 +83,7 @@ User.login = ( email, password, next ) => {
 User.all = next => {
     if ( !connection )
         return next('Connection refused');
-        connection.query('SELECT * FROM user', (error, result) => {
+        connection.query('SELECT * FROM user HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -94,7 +94,7 @@ User.all = next => {
 User.findById = (UserId, next) => {
     if ( !connection )
         return next('Connection refused');
-        connection.query('SELECT * FROM user WHERE iduser = ?',
+        connection.query('SELECT * FROM user WHERE iduser = ? HAVING baja IS NULL OR baja = false',
         [UserId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -143,6 +143,17 @@ User.remove = (UserId, next) => {
     connection.query('DELETE FROM user WHERE iduser = ?', [UserId], (error, result) => {
         if(error) return next({ success: false, error: error, message: 'An error has happened while deleting table' });
         return next(null, { success: true, result: result, message: '¡Usuario eliminado!' });
+    });
+};
+
+User.logicRemove = (userId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE user SET baja = 1 WHERE iduser = ?', [userId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'User eliminado' });
     });
 };
 

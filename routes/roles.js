@@ -42,6 +42,7 @@ router
         const rol = {
             idrol: null,
             nombre: req.body.nombre,
+            baja: false
         }
         console.log(rol);
         Rol.insert( rol, (error, data) => {

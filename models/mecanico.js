@@ -5,7 +5,7 @@ const Mecanico = {};
 Mecanico.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM mecanico', (error, result) => {
+    connection.query('SELECT * FROM mecanico HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Mecanico.all = next => {
 Mecanico.findById = (MecanicoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM mecanico WHERE idmecanico = ?',
+    connection.query('SELECT * FROM mecanico WHERE idmecanico = ? HAVING baja IS NULL OR baja = false',
     [MecanicoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,17 @@ Mecanico.update = (Mecanico, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+Mecanico.logicRemove = (mecanicoId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE mecanico SET baja = 1 WHERE idmecanico = ?', [mecanicoId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Mecanico eliminado' });
     });
 };
 

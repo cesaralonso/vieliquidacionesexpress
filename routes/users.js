@@ -9,6 +9,7 @@ router
           usuario: req.body.usuario,
           password: req.body.password,
           rol_idrol: req.body.rol_idrol,
+          baja: false
         }
         User.register( user, (error, data) =>{
             User.response(res, error, data);
@@ -17,7 +18,7 @@ router
     .post('/login', (req, res, next) => {
         const email = req.body.email;
         const password = req.body.password;
-        
+
         User.login( email, password, ( error, data ) => {
             return User.response( res, error, data );
         });

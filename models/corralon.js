@@ -5,7 +5,7 @@ const Corralon = {};
 Corralon.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM corralon', (error, result) => {
+    connection.query('SELECT * FROM corralon HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Corralon.all = next => {
 Corralon.findById = (CorralonId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM corralon WHERE idcorralon = ?',
+    connection.query('SELECT * FROM corralon WHERE idcorralon = ? HAVING baja IS NULL OR baja = false',
     [CorralonId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -70,11 +70,23 @@ Corralon.update = (Corralon, next) => {
     });
 };
 
+Corralon.logicRemove = (corralonId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE corralon SET baja = 1 WHERE idcorralon = ?', [corralonId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Corralon eliminado' });
+    });
+};
+
 Corralon.response = (res, error, data) => {
     if ( error )
         res.status(500).json(error);
     else
         res.status(200).json(data);
 };
+
 
 module.exports = Corralon;

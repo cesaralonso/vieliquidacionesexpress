@@ -5,7 +5,7 @@ const Vehiculoreparando = {};
 Vehiculoreparando.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM vehiculoreparando', (error, result) => {
+    connection.query('SELECT * FROM vehiculoreparando HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Vehiculoreparando.all = next => {
 Vehiculoreparando.findById = (VehiculoreparandoId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM vehiculoreparando WHERE idvehiculoreparando = ?',
+    connection.query('SELECT * FROM vehiculoreparando WHERE idvehiculoreparando = ? HAVING baja IS NULL OR baja = false',
     [VehiculoreparandoId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,18 @@ Vehiculoreparando.update = (Vehiculoreparando, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+
+Vehiculoreparando.logicRemove = (vehiculoreparandoId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE vehiculoreparando SET baja = 1 WHERE idvehiculoreparando = ?', [vehiculoreparandoId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'Vehiculoreparando eliminado' });
     });
 };
 

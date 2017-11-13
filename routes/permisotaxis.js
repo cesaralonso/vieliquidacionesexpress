@@ -23,6 +23,17 @@ router
             return Permisotaxi.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const permisotaxiId = req.params.id;
+            Permisotaxi.logicRemove( permisotaxiId, (error, data) => {
+                return Permisotaxi.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
     .patch('/', (req, res, next) => {
         const permisotaxi = {
             idpermisotaxi: req.body.idpermisotaxi,
@@ -49,7 +60,8 @@ router
             liquidez: req.body.liquidez,
             liquidezDom: req.body.liquidezDom,
             propietario: req.body.propietario,
-          
+            baja: false
+
           };
         console.log(permisotaxi);
         Permisotaxi.insert( permisotaxi, (error, data) => {

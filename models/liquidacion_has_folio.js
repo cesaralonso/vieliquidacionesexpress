@@ -5,7 +5,7 @@ const Liquidacion_has_folio = {};
 Liquidacion_has_folio.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM liquidacion_has_folio', (error, result) => {
+    connection.query('SELECT * FROM liquidacion_has_folio HAVING baja IS NULL OR baja = false', (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
@@ -16,7 +16,7 @@ Liquidacion_has_folio.all = next => {
 Liquidacion_has_folio.findById = (liquidacion_idliquidacionId,folio_idfolioId, next) => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM liquidacion_has_folio WHERE liquidacion_idliquidacion = ? AND folio_idfolio = ?',
+    connection.query('SELECT * FROM liquidacion_has_folio WHERE liquidacion_idliquidacion = ? AND folio_idfolio = ? HAVING baja IS NULL OR baja = false',
     [liquidacion_idliquidacionId,folio_idfolioId], (error, result) => {
         if ( error )
             return next({ success: false, error: error })
@@ -67,6 +67,18 @@ Liquidacion_has_folio.update = (Liquidacion_has_folio, next) => {
             return next({ success: false, error: error });
         else
             return next( null, { success: true, result: result});
+    });
+};
+
+
+Liquidacion_has_folio.logicRemove = (liquidacion_idliquidacionId, folio_idfolioId, next) => {
+    if( !connection )
+        return next('Connection refused');
+    connection.query('UPDATE liquidacion_has_folio SET baja = 1 WHERE idliquidacion_idliquidacion = ? idfolio_idfolio = ?', [liquidacion_idliquidacionId, folio_idfolioId], (error, result) => {
+        if ( error )
+            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
+        else
+            return next( null, { success: true, result: result, message: 'registro eliminado' });
     });
 };
 

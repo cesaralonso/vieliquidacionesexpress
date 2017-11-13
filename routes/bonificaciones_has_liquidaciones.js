@@ -23,6 +23,17 @@ router
             return Bonificacion_has_liquidacion.response(res, error, data);
         });
     })
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const bonificacion_idbonificacionId = req.params.id;
+            Bonificacion_has_liquidacion.logicRemove( bonificacion_idbonificacionId, liquidacion_idliquidacionId, (error, data) => {
+                return Bonificacion_has_liquidacion.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
+
     .patch('/', (req, res, next) => {
         const bonificacion_has_liquidacion = {
             bonificacion_idbonificacion: req.body.bonificacion_idbonificacion,
@@ -37,6 +48,7 @@ router
         const bonificacion_has_liquidacion = {
             bonificacion_idbonificacion: req.body.bonificacion_idbonificacion,
             liquidacion_idliquidacion: req.body.liquidacion_idliquidacion,
+            baja: false
 
         };
         console.log(bonificacion_has_liquidacion);

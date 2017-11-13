@@ -23,6 +23,17 @@ router
             return Persona.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const personaId = req.params.id;
+            Persona.logicRemove( personaId, (error, data) => {
+                return Persona.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
     .patch('/', (req, res, next) => {
         const persona = {
             idPersona: req.body.idPersona,
@@ -48,6 +59,7 @@ router
             telefono: req.body.telefono,
             domicilio: req.body.domicilio,
             coordenada_idcoordenada: req.body.coordenada_idcoordenada,
+            baja: false
         };
         console.log(persona);
         Persona.insert( persona, (error, data) => {

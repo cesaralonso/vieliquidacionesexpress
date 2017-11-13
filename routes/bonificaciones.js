@@ -23,6 +23,17 @@ router
             return Bonificacion.response(res, error, data);
         });
     })
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const bonificacionId = req.params.id;
+            Bonificacion.logicRemove( bonificacionId, (error, data) => {
+                return Bonificacion.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
+
     .patch('/', (req, res, next) => {
         const bonificacion = {
             idbonificacion: req.body.idbonificacion,
@@ -45,7 +56,8 @@ router
             status: req.body.status,
             concepto: req.body.concepto,
             chofer_idchofer: req.body.chofer_idchofer,
-            
+            baja: false
+
         };
         console.log(bonificacion);
         Bonificacion.insert( bonificacion, (error, data) => {

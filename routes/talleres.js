@@ -23,6 +23,17 @@ router
             return Taller.response(res, error, data);
         });
     })
+
+
+    .delete('/:id', (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            const tallerId = req.params.id;
+            Taller.logicRemove( tallerId, (error, data) => {
+                return Taller.response(res, error, data);
+            });
+        })(req, res, next);
+    })
+
     .patch('/', (req, res, next) => {
         const taller = {
             idtaller: req.body.idtaller,
@@ -45,7 +56,7 @@ router
             telefono: req.body.telefono,
             descripcion: req.body.descripcion,
             coordenada_idcoordenada: req.body.coordenada_idcoordenada,
-          
+            baja: false
           };
         console.log(taller);
         Taller.insert( taller, (error, data) => {

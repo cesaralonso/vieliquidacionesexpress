@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Fianza = require('../models/fianza');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {
@@ -23,8 +24,6 @@ router
             return Fianza.response(res, error, data);
         });
     })
-
-
     .delete('/:id', (req, res, next) => {
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
             const fianzaId = req.params.id;
@@ -33,8 +32,6 @@ router
             });
         })(req, res, next);
     })
-
-
     .patch('/', (req, res, next) => {
         const fianza = {
             idfianza: req.body.idfianza,
@@ -56,8 +53,7 @@ router
             status: req.body.status,
             chofer_idchofer: req.body.chofer_idchofer,
             baja: false
-
-          };
+        };
         console.log(fianza);
         Fianza.insert( fianza, (error, data) => {
             return Fianza.response(res, error, data);

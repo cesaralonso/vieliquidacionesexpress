@@ -53,9 +53,9 @@ Fianza.insert = (Fianza, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO fianza SET ?`, [Fianza], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Fianza agregada correctamente' });
     });
 };
 
@@ -64,9 +64,9 @@ Fianza.update = (Fianza, next) => {
         return next('Connection refused');
     connection.query('UPDATE fianza SET ? WHERE idfianza = ?', [Fianza, Fianza.idfianza], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos de la fianza actualizados'});
     });
 };
 
@@ -77,7 +77,7 @@ Fianza.logicRemove = (fianzaId, next) => {
         if ( error )
             return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
         else
-            return next( null, { success: true, result: result, message: 'Fianza eliminado' });
+            return next( null, { success: true, result: result, message: 'Fianza eliminada' });
     });
 };
 

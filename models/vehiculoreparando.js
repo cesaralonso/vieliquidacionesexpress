@@ -53,9 +53,9 @@ Vehiculoreparando.insert = (Vehiculoreparando, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO vehiculoreparando SET ?`, [Vehiculoreparando], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Vehiculo agregado correctamente' });
     });
 };
 
@@ -64,9 +64,9 @@ Vehiculoreparando.update = (Vehiculoreparando, next) => {
         return next('Connection refused');
     connection.query('UPDATE vehiculoreparando SET ? WHERE idvehiculoreparando = ?', [Vehiculoreparando, Vehiculoreparando.idvehiculoreparando], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos del vehiculo actualizados'});
     });
 };
 

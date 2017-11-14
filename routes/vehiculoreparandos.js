@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Vehiculoreparando = require('../models/vehiculoreparando');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {
@@ -23,8 +24,6 @@ router
             return Vehiculoreparando.response(res, error, data);
         });
     })
-
-
     .delete('/:id', (req, res, next) => {
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
             const vehiculoreparandoId = req.params.id;
@@ -33,7 +32,6 @@ router
             });
         })(req, res, next);
     })
-
     .patch('/', (req, res, next) => {
         const vehiculoreparando = {
             idvehiculoreparando: req.body.idvehiculoreparando,

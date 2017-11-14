@@ -53,9 +53,9 @@ Taller.insert = (Taller, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO taller SET ?`, [Taller], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Taller agregado correctamente' });
     });
 };
 
@@ -64,9 +64,9 @@ Taller.update = (Taller, next) => {
         return next('Connection refused');
     connection.query('UPDATE taller SET ? WHERE idtaller = ?', [Taller, Taller.idtaller], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos del taller actualizados'});
     });
 };
 

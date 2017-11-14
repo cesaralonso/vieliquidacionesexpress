@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Taller = require('../models/taller');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {

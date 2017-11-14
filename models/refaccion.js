@@ -53,9 +53,9 @@ Refaccion.insert = (Refaccion, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO refaccion SET ?`, [Refaccion], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Refacción agregada correctamente' });
     });
 };
 
@@ -64,9 +64,9 @@ Refaccion.update = (Refaccion, next) => {
         return next('Connection refused');
     connection.query('UPDATE refaccion SET ? WHERE idrefaccion = ?', [Refaccion, Refaccion.idrefaccion], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos de la refaccón actualizados'});
     });
 };
 

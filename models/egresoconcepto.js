@@ -53,9 +53,9 @@ Egresoconcepto.insert = (Egresoconcepto, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO egresoconcepto SET ?`, [Egresoconcepto], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Egreso de concepto agregado correctamente' });
     });
 };
 
@@ -64,9 +64,9 @@ Egresoconcepto.update = (Egresoconcepto, next) => {
         return next('Connection refused');
     connection.query('UPDATE egresoconcepto SET ? WHERE idegresoconcepto = ?', [Egresoconcepto, Egresoconcepto.idegresoconcepto], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos del egreso actualizados'});
     });
 };
 
@@ -77,7 +77,7 @@ Egresoconcepto.logicRemove = (egresoconceptoId, next) => {
         if ( error )
             return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
         else
-            return next( null, { success: true, result: result, message: 'Egresoconcepto eliminado' });
+            return next( null, { success: true, result: result, message: 'Egreso de concepto eliminado' });
     });
 };
 

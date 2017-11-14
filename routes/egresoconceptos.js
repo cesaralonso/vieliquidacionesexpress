@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Egresoconcepto = require('../models/egresoconcepto');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {
@@ -23,7 +24,6 @@ router
             return Egresoconcepto.response(res, error, data);
         });
     })
-
     .delete('/:id', (req, res, next) => {
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
             const egresoconceptoId = req.params.id;
@@ -32,8 +32,6 @@ router
             });
         })(req, res, next);
     })
-
-
     .patch('/', (req, res, next) => {
         const egresoconcepto = {
             idegresoconcepto: req.body.idegresoconcepto,
@@ -54,7 +52,6 @@ router
             total: req.body.total,
             taller_idtaller: req.body.taller_idtaller,
             concepto_idconcepto: req.body.concepto_idconcepto,
-            concepto_idconceptoMotor: req.body.concepto_idconceptoMotor,
             baja: false
           };
         console.log(egresoconcepto);

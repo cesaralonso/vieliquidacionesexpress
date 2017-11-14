@@ -53,9 +53,9 @@ Modulo.insert = (Modulo, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO modulo SET ?`, [Modulo], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Módulo agregado correctamente' });
     });
 };
 
@@ -64,9 +64,9 @@ Modulo.update = (Modulo, next) => {
         return next('Connection refused');
     connection.query('UPDATE modulo SET ? WHERE idmodulo = ?', [Modulo, Modulo.idmodulo], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos del módulo actualizados'});
     });
 };
 

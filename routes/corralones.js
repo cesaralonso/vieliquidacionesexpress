@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Corralon = require('../models/corralon');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {

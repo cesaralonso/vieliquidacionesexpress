@@ -53,9 +53,9 @@ Mecanico.insert = (Mecanico, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO mecanico SET ?`, [Mecanico], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Mecanico agregado correctamente' });
     });
 };
 
@@ -64,9 +64,9 @@ Mecanico.update = (Mecanico, next) => {
         return next('Connection refused');
     connection.query('UPDATE mecanico SET ? WHERE idmecanico = ?', [Mecanico, Mecanico.idmecanico], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos del mecanico actualizados'});
     });
 };
 

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Liquidacion = require('../models/liquidacion');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {
@@ -23,8 +24,6 @@ router
             return Liquidacion.response(res, error, data);
         });
     })
-
-
     .delete('/:id', (req, res, next) => {
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
             const liquidacionId = req.params.id;
@@ -33,7 +32,6 @@ router
             });
         })(req, res, next);
     })
-
     .patch('/', (req, res, next) => {
         const liquidacion = {
             idliquidacion: req.body.idliquidacion,
@@ -49,7 +47,6 @@ router
             bonificado: req.body.bonificado,
             chofer_idchofer: req.body.chofer_idchofer,
             };
-
         Liquidacion.update( liquidacion, (error, data) => {
             return Liquidacion.response(res, error, data);
         })

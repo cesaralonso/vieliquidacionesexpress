@@ -53,9 +53,9 @@ Servicio.insert = (Servicio, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO servicio SET ?`, [Servicio], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Servicio agregado correctamente' });
     });
 };
 
@@ -64,9 +64,9 @@ Servicio.update = (Servicio, next) => {
         return next('Connection refused');
     connection.query('UPDATE servicio SET ? WHERE idservicio = ?', [Servicio, Servicio.idservicio], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos del servicio actualizados'});
     });
 };
 

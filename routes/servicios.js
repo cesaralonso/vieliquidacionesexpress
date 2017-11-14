@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Servicio = require('../models/servicio');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {
@@ -23,8 +24,6 @@ router
             return Servicio.response(res, error, data);
         });
     })
-
-
     .delete('/:id', (req, res, next) => {
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
             const servicioId = req.params.id;
@@ -33,7 +32,6 @@ router
             });
         })(req, res, next);
     })
-
     .patch('/', (req, res, next) => {
         const servicio = {
             idservicio: req.body.idservicio,
@@ -52,8 +50,8 @@ router
             nombre: req.body.nombre,
             precio: req.body.precio,
             iva: req.body.iva,
+            taller_idtaller: req.body.taller_idtaller,
             baja: false
-
           };
         console.log(servicio);
         Servicio.insert( servicio, (error, data) => {

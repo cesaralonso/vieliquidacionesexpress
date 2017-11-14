@@ -53,9 +53,9 @@ Bonificacion.insert = (Bonificacion, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO bonificacion SET ?`, [Bonificacion], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Bonificación agregada correctamente' });
     });
 };
 
@@ -64,9 +64,9 @@ Bonificacion.update = (Bonificacion, next) => {
         return next('Connection refused');
     connection.query('UPDATE bonificacion SET ? WHERE idbonificacion = ?', [Bonificacion, Bonificacion.idbonificacion], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos de la bonificación actualizados'});
     });
 };
 

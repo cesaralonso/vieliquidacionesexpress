@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Bonificacion = require('../models/bonificacion');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {
@@ -23,7 +24,6 @@ router
             return Bonificacion.response(res, error, data);
         });
     })
-
     .delete('/:id', (req, res, next) => {
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
             const bonificacionId = req.params.id;
@@ -32,8 +32,6 @@ router
             });
         })(req, res, next);
     })
-
-
     .patch('/', (req, res, next) => {
         const bonificacion = {
             idbonificacion: req.body.idbonificacion,

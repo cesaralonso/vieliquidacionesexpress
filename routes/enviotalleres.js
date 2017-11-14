@@ -24,8 +24,6 @@ router
             return Enviotaller.response(res, error, data);
         });
     })
-
-
     .delete('/:id', (req, res, next) => {
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
             const enviotallerId = req.params.id;
@@ -34,8 +32,6 @@ router
             });
         })(req, res, next);
     })
-
-
     .patch('/', (req, res, next) => {
         const enviotaller = {
             idenviotaller: req.body.idenviotaller,

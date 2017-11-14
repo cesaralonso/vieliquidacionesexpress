@@ -81,16 +81,6 @@ Vehiculo.logicRemove = (vehiculoId, next) => {
     });
 };
 
-Vehiculo.logicRemove = (vehiculoId, next) => {
-    if( !connection )
-        return next('Connection refused');
-    connection.query('UPDATE vehiculo SET baja = 1 WHERE idvehiculo = ?', [vehiculoId], (error, result) => {
-        if ( error )
-            return next({ success: false, error: error, message: 'Hubo un error al eliminar este registro' });
-        else
-            return next( null, { success: true, result: result, message: 'Vehiculo eliminado' });
-    });
-};
 
 Vehiculo.response = (res, error, data) => {
     if ( error )

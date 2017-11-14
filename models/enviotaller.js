@@ -53,9 +53,9 @@ Enviotaller.insert = (Enviotaller, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO enviotaller SET ?`, [Enviotaller], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Registro de envío a taller agregado correctamente' });
     });
 };
 
@@ -64,9 +64,9 @@ Enviotaller.update = (Enviotaller, next) => {
         return next('Connection refused');
     connection.query('UPDATE enviotaller SET ? WHERE idenviotaller = ?', [Enviotaller, Enviotaller.idenviotaller], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos del envío al taller actualizados'});
     });
 };
 

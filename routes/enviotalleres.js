@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Enviotaller = require('../models/enviotaller');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {

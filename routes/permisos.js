@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Permiso = require('../models/permiso');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {
@@ -23,8 +24,6 @@ router
             return Permiso.response(res, error, data);
         });
     })
-
-
     .delete('/:id', (req, res, next) => {
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
             const permisoId = req.params.id;
@@ -33,14 +32,12 @@ router
             });
         })(req, res, next);
     })
-
     .patch('/', (req, res, next) => {
         const permiso = {
             idpermiso: req.body.idpermiso,
             acceso: req.body.acceso,
             rol_idrol: req.body.rol_idrol,
             modulo_idmodulo: req.body.modulo_idmodulo,
-
         };
         Permiso.update( permiso, (error, data) => {
             return Permiso.response(res, error, data);
@@ -53,7 +50,6 @@ router
             rol_idrol: req.body.rol_idrol,
             modulo_idmodulo: req.body.modulo_idmodulo,
             baja: false
-
         };
         console.log(permiso);
         Permiso.insert( permiso, (error, data) => {

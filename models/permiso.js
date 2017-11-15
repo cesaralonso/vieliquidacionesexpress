@@ -53,9 +53,9 @@ Permiso.insert = (Permiso, next) => {
         return next('Connection refused');
     connection.query(`INSERT INTO permiso SET ?`, [Permiso], (error, result) => {
         if ( error )
-            return next({ success: false, error: error })
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo' })
         else
-            return next( null, { success: true, result: result });
+            return next( null, { success: true, result: result, message: 'Permiso agregado correctamente' });
     });
 };
 
@@ -64,9 +64,9 @@ Permiso.update = (Permiso, next) => {
         return next('Connection refused');
     connection.query('UPDATE permiso SET ? WHERE idpermiso = ?', [Permiso, Permiso.idpermiso], (error, result) => {
         if ( error )
-            return next({ success: false, error: error });
+            return next({ success: false, error: error, message: 'Hubo un error al realizar esta acción, intente de nuevo'});
         else
-            return next( null, { success: true, result: result});
+            return next( null, { success: true, result: result, message: 'Datos del permiso actualizados'});
     });
 };
 

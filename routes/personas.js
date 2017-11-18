@@ -24,8 +24,6 @@ router
             return Persona.response(res, error, data);
         });
     })
-
-
     .delete('/:id', (req, res, next) => {
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
             const personaId = req.params.id;
@@ -34,7 +32,6 @@ router
             });
         })(req, res, next);
     })
-
     .patch('/', (req, res, next) => {
         const persona = {
             idpersona: req.body.idpersona,
@@ -56,7 +53,7 @@ router
             nombre: req.body.nombre,
             edad: req.body.edad,
             sexo: req.body.sexo,
-            RFC: req.body.RFC,
+            RFC: req.body.rfc,
             telefono: req.body.telefono,
             domicilio: req.body.domicilio,
             coordenada_idcoordenada: req.body.coordenada_idcoordenada,

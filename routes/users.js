@@ -7,6 +7,7 @@ router
         const user = {
           iduser: null,
           usuario: req.body.usuario,
+          email: req.body.email,
           password: req.body.password,
           rol_idrol: req.body.rol_idrol,
           baja: false
@@ -27,12 +28,6 @@ router
     .post('/profile', passport.authenticate('jwt', { session: false }), (req, res, next) => {
         res.send('Route Authentication Works!');
     })
-    // .post('/profile', (req, res, next) => { // http://passportjs.org/docs -> Custom Callback
-    //     passport.authenticate('jwt', { session: false}, (err, user, info) => {
-    //         console.log(user.iduser);
-    //         //
-    //     })(req, res, next);
-    // })
     .get('/', (req, res, next) => {
         User.all( (error, data) => {
             return User.response(res, error, data);

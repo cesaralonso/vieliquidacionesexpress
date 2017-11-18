@@ -32,7 +32,6 @@ router
             });
         })(req, res, next);
     })
-
     .patch('/', (req, res, next) => {
         const orden = {
             idorden: req.body.idorden,
@@ -60,10 +59,12 @@ router
             status: req.body.status,
             vehiculoreparando_idvehiculoreparando: req.body.vehiculoreparando_idvehiculoreparando,
             baja: false
+        };
+        const refacciones = req.body.refacciones;
+        const servicios = req.body.servicios;
 
-          };
         console.log(orden);
-        Orden.insert( orden, (error, data) => {
+        Orden.insert( orden, refacciones, servicios, (error, data) => {
             return Orden.response(res, error, data);
         });
     })

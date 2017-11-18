@@ -52,12 +52,12 @@ router
             nombre: req.body.nombre,
             precioCompra: req.body.precioCompra,
             precioVenta: req.body.precioVenta,
-            precioVentaIva: req.body.precioVentaIva,
             taller_idtaller: req.body.taller_idtaller,
             baja: false
           };
         console.log(refaccion);
         Refaccion.insert( refaccion, (error, data) => {
+            console.log(error);
             return Refaccion.response(res, error, data);
         });
     })

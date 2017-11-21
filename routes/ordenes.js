@@ -42,7 +42,6 @@ router
             anticipo: req.body.anticipo,
             status: req.body.status,
             vehiculoreparando_idvehiculoreparando: req.body.vehiculoreparando_idvehiculoreparando,
-
         };
         Orden.update( orden, (error, data) => {
             return Orden.response(res, error, data);
@@ -57,14 +56,15 @@ router
             total: req.body.total,
             anticipo: req.body.anticipo,
             status: req.body.status,
+            descripcion: req.body.descripcion,
             vehiculoreparando_idvehiculoreparando: req.body.vehiculoreparando_idvehiculoreparando,
             baja: false
         };
         const refacciones = req.body.refacciones;
-        const servicios = req.body.servicios;
 
         console.log(orden);
-        Orden.insert( orden, refacciones, servicios, (error, data) => {
+        console.log(refacciones);
+        Orden.insert( orden, refacciones, (error, data) => {
             return Orden.response(res, error, data);
         });
     })

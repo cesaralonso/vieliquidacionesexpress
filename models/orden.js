@@ -15,10 +15,6 @@ Orden.all = next => {
         (prevResult, next) => {
             DynamicQueries.addRelation(prevResult, 'orden_has_refaccion', 'idorden', 'orden_idorden', 'refacciones', (error, result) =>
                 error ? next(error) : next(null, result));
-        },
-        (prevResult, next) => {
-            DynamicQueries.addRelation(prevResult, 'orden_has_servicio', 'idorden', 'orden_idorden', 'servicios', (error, result) =>
-                error ? next(error) : next(null, result));
         }
     ],
     (error, result) => {
@@ -41,10 +37,6 @@ Orden.findById = (ordenId, next) => {
         },
         (prevResult, next) => {
             DynamicQueries.addRelation(prevResult, 'orden_has_refaccion', 'idorden', 'orden_idorden', 'refacciones', (error, result) =>
-                error ? next(error) : next(null, result));
-        },
-        (prevResult, next) => {
-            DynamicQueries.addRelation(prevResult, 'orden_has_servicio', 'idorden', 'orden_idorden', 'servicios', (error, result) =>
                 error ? next(error) : next(null, result));
         }
     ],
@@ -80,7 +72,7 @@ Orden.exist = (OrdenId, next) => {
     })
 };
 
-Orden.insert = (oden, refacciones, servicios, next) => {
+Orden.insert = (oden, refacciones, next) => {
     if ( !connection )
         return next('Connection refused');
     connection.beginTransaction( err => {
@@ -92,23 +84,14 @@ Orden.insert = (oden, refacciones, servicios, next) => {
                 })
             },
             (resultOrden, next) => {
+                let refaccionInsert = { orden_idorden: resultOrden.insertId, baja: false }
                 each( refacciones, (refaccion, cb) => {
-                    refaccion.orden_idorden = resultOrden.insertId;
-                    refaccion.baja = false
+                    refaccionInsert.refaccion_idrefaccion = refaccion.idrefaccion
+                    refaccionInsert.cantidad = refaccion.cantidad
                     connection.query(`INSERT INTO orden_has_refaccion SET ? `,
-                    [refaccion], (error, result)=> error ? cb(error) : cb());
+                    [refaccionInsert], (error, result)=> error ? cb(error) : cb());
                 },
                 // Error from async.each
-                error => error ? next(error) : next(null, resultOrden))
-            },
-            (resultOrden, next) => {
-                each( servicios, (servicio, cb) => {
-                    servicio.orden_idorden = resultOrden.insertId;
-                    servicio.baja = false;
-                    connection.query(`INSERT INTO orden_has_servicio SET ?`,
-                    [servicio], (error, result) =>  error ? cb(error) : cb());
-                },
-                // Error from async.each                
                 error => error ? next(error) : next(null, resultOrden))
             }
         ],

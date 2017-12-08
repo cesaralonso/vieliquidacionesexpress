@@ -24,8 +24,6 @@ router
             return Chofer.response(res, error, data);
         });
     })
-
-
     .delete('/:id', (req, res, next) => {
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
             const choferId = req.params.id;

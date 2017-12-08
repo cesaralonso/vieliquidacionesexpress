@@ -1,16 +1,30 @@
 const connection = require('../config/db-connection');
+const { waterfall } = require('async');
+const DynamicQueries = require('../services/dynamic-queries');
 
 const Chofer = {};
 
 Chofer.all = next => {
     if ( !connection )
         return next('Connection refused');
-    connection.query('SELECT * FROM chofer HAVING baja IS NULL OR baja = false', (error, result) => {
+    waterfall([
+        next => {
+            connection.query('SELECT * FROM chofer HAVING baja IS NULL OR baja = false', (error, result) => {
+                error ? next(error) : next(null, result)
+            });
+        }
+        // (prevResult, next) => {
+        //     // Add relation chofer => person
+        //     // And then aval1 => person, and so on
+        //     // DynamicQueries.addRelation( prevResult, 'persona', '')
+        // }
+    ],
+    (error, result) => {
         if ( error )
             return next({ success: false, error: error })
         else
             return next( null, { success: true, result: result });
-    });
+    })
 };
 
 Chofer.findById = (choferId, next) => {

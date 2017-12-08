@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Orden = require('../models/orden');
+const passport = require('passport');
 
 router
     .get('/', (req, res, next) => {
@@ -28,6 +29,7 @@ router
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
             const ordenId = req.params.id;
             Orden.logicRemove( ordenId, (error, data) => {
+                console.log(error)
                 return Orden.response(res, error, data);
             });
         })(req, res, next);

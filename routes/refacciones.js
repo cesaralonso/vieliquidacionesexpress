@@ -51,11 +51,11 @@ router
             idrefaccion: null,
             nombre: req.body.nombre,
             precioCompra: req.body.precioCompra,
-            precioVenta: req.body.precioVenta,
             taller_idtaller: req.body.taller_idtaller,
             baja: false
           };
         console.log(refaccion);
+        refaccion.precioVenta = parseInt(refaccion.precioCompra) + parseInt(refaccion.precioCompra * 0.16)
         Refaccion.insert( refaccion, (error, data) => {
             console.log(error);
             return Refaccion.response(res, error, data);

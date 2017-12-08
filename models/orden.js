@@ -38,6 +38,12 @@ Orden.findById = (ordenId, next) => {
         (prevResult, next) => {
             DynamicQueries.addRelation(prevResult, 'orden_has_refaccion', 'idorden', 'orden_idorden', 'refacciones', (error, result) =>
                 error ? next(error) : next(null, result));
+        },
+        (prevResult, next) => {
+            DynamicQueries.addRelation(prevResult[0].refacciones, 'refaccion', 'refaccion_idrefaccion', 'idrefaccion', 'info', (error, result) =>
+               { 
+                   prevResult[0].refacciones = result
+                   error ? next(error) : next(null, prevResult)});
         }
     ],
     (error, result) => {
